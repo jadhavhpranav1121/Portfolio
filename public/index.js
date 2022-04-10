@@ -1,7 +1,8 @@
+
 $(window).scroll(function() {
-    if ($(window).scrollTop() > 10) {
-        $('.navBar').addClass('floatingNav');
+    if ($(window).scrollTop() > 0) {
+        $('.navigation').addClass('floatingNav');
     } else {
-        $('#navBar').removeClass('floatingNav');
+        $('.navigation').removeClass('floatingNav');
     }
 });

@@ -15,5 +15,6 @@
   "bugs": {
     "url": "https://github.com/jadhavhpranav1121/Portfolio/issues"
   },
-  "homepage": "https://github.com/jadhavhpranav1121/Portfolio#readme"
+  "homepage": "https://github.com/jadhavhpranav1121/Portfolio#readme",
+  "dependencies": {}
 }
