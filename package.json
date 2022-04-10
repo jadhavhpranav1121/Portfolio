@@ -1,0 +1,19 @@
+{
+  "name": "portfolio",
+  "version": "1.0.0",
+  "description": "Pranav Jadhav Portfolio",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jadhavhpranav1121/Portfolio.git"
+  },
+  "author": "Pranav Jadhav",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jadhavhpranav1121/Portfolio/issues"
+  },
+  "homepage": "https://github.com/jadhavhpranav1121/Portfolio#readme"
+}
