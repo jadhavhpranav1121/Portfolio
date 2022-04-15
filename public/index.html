@@ -9,13 +9,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <title>Pranav Jadhav</title>
 </head>
 
 <body onload="loader()">
   <div id="loading"></div>
 
-  <div class="container">
+  <div data-aos="fade-down" data-aos-duration="1000" data-aos-anchor-placement="top-bottom" class="container">
     <nav class="navigation">
       <div class="logo">PJ.</div>
       <div class="navbar_link">
@@ -51,7 +52,7 @@
 
 
 
-    <section class="name_section">
+    <section  data-aos="zoom-in" data-aos-duration="1000"  class="name_section">
       <p class="hey_there">Hey there!,I'm - </p>
       <p class="name">Pranav Jadhav.</p>
       <p class="description">Full Stack Developer.<span class="color_grey"> A self-taught Developer with an<br> interest in Computer science</span></p>
@@ -95,7 +96,7 @@
 
 
 
-    <div class="about_me_section">
+    <div  data-aos="zoom-in" data-aos-duration="1000"  class="about_me_section">
       <section class="about_me">
         <div class="title">⚡ About Me</div>
         <div class="p1">
@@ -119,20 +120,20 @@
         </div>
       </section>
       <section class="photos">
-        <img src="./assets/profile.jpg" alt="" width="300px" height="300px">
+        <img src="./assets/profile.png" alt="" width="300px" height="300px">
       </section>
     </div>
 
-    <div class="project_section">
+    <div  data-aos="zoom-in" data-aos-duration="1000" class="project_section">
       <div class="heading_project">
         <h1>All Creative Works</h1>
         <p>Here's some of my projects that i have worked on.</p>
         <a href="#">Explore more →</a>
       </div>
       <div class="projects">
-        <ul class="cards">
+        <ul data-aos="zoom-in"  data-aos-anchor-placement="top-bottom"  class="cards">
           <li class="cards_item">
-            <div class="card">
+            <div    class="card">
               <div class="card_image"><img src="https://picsum.photos/500/300/?image=10"></div>
               <div class="card_content">
                 <div class="card_upper_part">
@@ -253,7 +254,7 @@
           </li>
       </div>
     </div>
-    <div class="keep_in_touch">
+    <div  data-aos="zoom-in" data-aos-duration="1000"  class="keep_in_touch">
       <div class="main_box_keep">
         <h1>Keep In Touch.</h1>
         <p class="p1">
@@ -295,9 +296,9 @@
 
     </div>
     <div class="footer">
-      Designed and Developed by Pranav Jadhav.
-      <br>
-      Bulit with HTML,CSS and JS. Hosted by firebase.
+      Designed and Developed by <span class="highlight">Pranav Jadhav.</span>
+      <br> 
+      Bulit with <span class="highlight">HTML,CSS and JS.</span> Hosted by <span class="highlight">Firebase.</span>
     </div>
   </div>
   </div>
@@ -308,6 +309,7 @@
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="index.js"></script>
 
 </html>

@@ -5,6 +5,8 @@
     background-color: rgb(0, 0, 0);
     color: white;
     transition: 0.2s;
+
+  
 }
 
 html {
@@ -94,6 +96,11 @@ body {
     background-color: #191919;
 }
 
+/* Extras */
+.highlight{
+    color:#54ff6e;
+}
+
 
 /* Navigation Section */
 
@@ -116,6 +123,7 @@ body {
     transition: 0.2s;
     /* backdrop-filter:blur(15px)!important; */
     /* box-shadow: 0 10px 10px 0 rgba(218, 217, 221, 0.171)!important; */
+
 }
 .navigation .logo{
     width:50%;
@@ -263,7 +271,7 @@ a>span:after {
 
 .about_me_section {
     display: flex;
-    height: 100vh;
+    margin:50px 0px;
 }
 
 .about_me {
@@ -300,7 +308,7 @@ a>span:after {
 .about_me_section .photos {
     display: flex;
     width: 50%;
-    margin-left: 100px;
+    margin-left: 150px;
     align-items: center;
     border-radius: 50%;
 }
@@ -503,4 +511,36 @@ a>span:after {
 }
 .right_card a{
     margin-right: 15px;
+}
+
+
+
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
