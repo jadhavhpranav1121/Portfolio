@@ -281,7 +281,9 @@ section{
 }
 
 /* Project section */
-
+.project_section{
+    margin-bottom: 100px;
+}
 .cards {
     display: flex;
     flex-wrap: wrap;
