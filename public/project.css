@@ -139,6 +139,7 @@ body {
     background-color: #7ee8fa;
     background: linear-gradient(315deg, #7ee8fa 0%, #80ff72 25%);
 	-webkit-background-clip: text;
+    background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
 .navigation .navbar_link {
