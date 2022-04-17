@@ -79,7 +79,7 @@ let charIndex = 0;
   // skills
   kindChart($('.chart.skills'), {
 	web: '#EEEEEE',
-	labels: ["Website Design", "UX Design", "Marketing", "Javascript", "HTML & CSS", "Ruby on Rails", "Tech Demos", "Leading Teams"],
+	labels: ["Angular", "Data Structures and algorithm", "HTML & CSS", "NodeJS", "MongoDB", "Problem solver", "React", "Javascript"],
 	datasets: [ // 0 being farthest back, 1 being closest
 		{
 			label: 'Level of Interest',
