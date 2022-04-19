@@ -11,15 +11,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <title>Pranav Jadhav</title>
 </head>
 
 <body onload="loader()">
-  <div id="loading"></div>
-
-  <div class="container">
+  <div class="loader">
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+  </div>
+  <div class="container"  data-aos="fade-down" data-aos-duration="1000" data-aos-once="true"  data-aos-anchor-placement="top-bottom">
     <nav class="navigation">
-      <div class="logo">PJ.</div>
+      <div class="logo">
+        <a href="index.html" class="logo_div">
+          PJ.
+        </a>
+       </div>
       <div class="navbar_link">
         <a class="hover-3 " href="index.html"><svg stroke="currentColor" fill="currentColor"
             stroke-width="0" viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"
@@ -53,13 +59,13 @@
 
 
 
-    <section class="name_section">
+    <section  data-aos="zoom-in" data-aos-duration="1000" data-aos-once="true"   class="name_section">
       <p class="name">Projects</p>
       <p class="detail">I love building projects and practice my engineering skills, here's an archive of things that I've worked on.</p>
       <div class="search"> <input type="text" id="input_project" onkeyup="search_function()" class="search-input" placeholder="Search..." name=""> <a href="javascript:void(0);" class="search-icon"> <i class="fa fa-search"></i></a> </div>
       <hr class="hr_css">
     </section>
-    <section class="project_section">
+    <section class="project_section" data-aos="zoom-in" data-aos-duration="1000" data-aos-once="true" >
       <div class="card_close">
         No Project found
       </div>
@@ -337,6 +343,7 @@
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="index.js"></script>
 
 </html>

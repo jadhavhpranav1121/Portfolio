@@ -1,16 +1,14 @@
-var preloader=document.getElementById('loading');
 function loader(){
-    preloader.style.display='none';
-	// card_close=document.getElementsByClassName("card_close")[0];
-	// if(card_close)
-	// 	card_close.style.display="none";
+	// var preloader=document.getElementsByClassName('lds-ellipsis');
+    // preloader[0].style.display='none';
+	// body.style.display="block";
 }
 $(window).scroll(function() {
     if ($(window).scrollTop() > 0) {
         $('.navigation').addClass('floatingNav');
     } else {
         $('.navigation').removeClass('floatingNav');
-    }
+    } 
 });
 
 // Search Function

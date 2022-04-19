@@ -9,15 +9,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <title>Pranav Jadhav</title>
 </head>
 
 <body onload="loader()">
-  <div id="loading"></div>
-
+  <div class="loader">
+    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+  </div>
   <div class="container">
     <nav class="navigation">
-      <div class="logo">PJ.</div>
+      <div class="logo">
+        <a href="index.html" class="logo_div">
+          PJ.
+        </a>
+       </div>
       <div class="navbar_link">
         <a class="hover-3 " href="index.html"><svg stroke="currentColor" fill="currentColor" stroke-width="0"
             viewBox="0 0 1024 1024" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"
@@ -134,6 +140,7 @@
 
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script src="index.js"></script>
 
 </html>
