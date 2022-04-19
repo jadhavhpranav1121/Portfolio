@@ -1,6 +1,9 @@
 var preloader=document.getElementById('loading');
 function loader(){
     preloader.style.display='none';
+	// card_close=document.getElementsByClassName("card_close")[0];
+	// if(card_close)
+	// 	card_close.style.display="none";
 }
 $(window).scroll(function() {
     if ($(window).scrollTop() > 0) {
@@ -9,6 +12,30 @@ $(window).scroll(function() {
         $('.navigation').removeClass('floatingNav');
     }
 });
+
+// Search Function
+function search_function() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("input_project");
+    filter = input.value.toUpperCase();
+    li = document.getElementsByClassName("card");
+	card_close=document.getElementsByClassName("card_close")[0];
+	var flag=false;
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByClassName("card_title")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+			flag|=true;
+        } else {
+			card_close.style.display="block";
+            li[i].style.display = "none";
+        }
+    }
+	if(flag){
+		card_close.style.display="none";
+	}
+}
 
 
 
@@ -25,85 +52,30 @@ const newTextDelay = 2000; // Delay between current and next text
 let textArrayIndex = 0;
 let charIndex = 0;
 
-// active
-
-// function activeClass(e) {
-//   var elems = document.querySelectorAll(".active");
-//   [].forEach.call(elems, function(el) {
-//     el.classList.remove("active");
-//   });
-//   e.target.className = "hover-3 active";
-// }
-
-
-
-// function type() {
-//   if (charIndex < textArray[textArrayIndex].length) {
-//     if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
-//     typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
-//     charIndex++;
-//     setTimeout(type, typingDelay);
-//   } 
-//   else {
-//     cursorSpan.classList.remove("typing");
-//   	setTimeout(erase, newTextDelay);
-//   }
-// }
-
-// function erase() {
-// 	if (charIndex > 0) {
-//     if(!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
-//     typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex-1);
-//     charIndex--;
-//     setTimeout(erase, erasingDelay);
-//   } 
-//   else {
-//     cursorSpan.classList.remove("typing");
-//     textArrayIndex++;
-//     if(textArrayIndex>=textArray.length) textArrayIndex=0;
-//     setTimeout(type, typingDelay + 1100);
-//   }
-// }
-
-// document.addEventListener("DOMContentLoaded", function() { // On DOM Load initiate the effect
-//   if(textArray.length) setTimeout(type, newTextDelay + 250);
-// });
-
-
 // AOS
   AOS.init();
 
 
 
-
-  // skills
+//  Charts
   kindChart($('.chart.skills'), {
 	web: '#EEEEEE',
 	labels: ["Angular", "Data Structures and algorithm", "HTML & CSS", "NodeJS", "MongoDB", "Problem solver", "React", "Javascript"],
-	datasets: [ // 0 being farthest back, 1 being closest
+	datasets: [ 
 		{
 			label: 'Level of Interest',
 			fillColor: "rgba(255,255,255,1)",
 			strokeColor: "rgba(255,255,255,1)",
-			data: [100, 70, 85, 90, 95, 75, 90, 100]
+			data: [90, 70, 85, 90, 95, 75, 90, 0]
 		},
 		{
 			label: 'Current Skill',
 			fillColor: "rgba(12,64,48,1)",
 			strokeColor: "rgba(12,64,48,1)",
-			data: [85, 75, 70, 80, 85, 60, 75, 50]
+			data: [85, 75, 70, 80, 85, 60, 75, 100			]
 		}
 	]
 });
-
-
-
-
-
-
-
-
-
 
 var go = true;
 if(window.location.hash == '#demo'){
@@ -111,6 +83,9 @@ if(window.location.hash == '#demo'){
 		go = false;
 	}, 9500);
 }
+
+
+
 
 
 // Heavy lifting

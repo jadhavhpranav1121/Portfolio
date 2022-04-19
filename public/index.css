@@ -165,9 +165,11 @@ body {
     font-weight: 700;
     display: grid;
     place-items: center;
+    border: 1px solid transparent;
+    border-radius: 5px;
 }
 
-.navigation .navbar_link a,
+/* .navigation .navbar_link a,
 a>span {
     position: relative;
     color: inherit;
@@ -195,8 +197,10 @@ a>span:after {
 
 .navigation .navbar_link .hover-3:hover:before {
     transform: translateX(0);
+} */
+.navigation .navbar_link .hover-3:hover{
+    border:1px solid rgb(255, 255, 255);
 }
-
 .navigation .navbar_link .active {
     color:#54ff6e;
 }
@@ -267,6 +271,7 @@ a>span:after {
     border-radius: 5px;
     display: flex;
     font-size: var(--font-fix-size);
+    border:1px solid transparent;
 }
 
 .name_section .links a svg {
@@ -274,7 +279,9 @@ a>span:after {
     fill: #54ff6e;
     background-color: transparent;
 }
-
+.name_section .links a:hover{
+    border: 1px solid white;
+}
 
 /* About Us section */
 
@@ -494,10 +501,11 @@ a>span:after {
     display: flex;
     margin: 5px 0px;
     font-size: 13px;
+    display:flex;
 }
 
 .tags .tag {
-    padding: 0px 20px;
+    padding: 0px 25px;
     margin-right: 10px;
     display: inline-flex;
     vertical-align: top;
@@ -507,7 +515,7 @@ a>span:after {
     font-weight: 600;
     line-height: 1.2;
     outline: 0px;
-    min-height: 1.5rem;
+    min-height:1.8rem;
     min-width: 1.5rem;
     font-size: 0.875rem;
     border-radius: 0.375rem;
@@ -516,7 +524,16 @@ a>span:after {
     background: rgba(226, 232, 240, 0.16);
     color: #E2E8F0;
 }
-
+.tags .tag .icon_tag{
+    background-color: transparent;
+    margin-right:5px;
+}
+.tags .tag .icon_tag svg{
+    background-color: transparent;
+}
+.tags .tag .text_icon_tag{
+    background-color: transparent;
+}
 .card_text {
     margin-top:5px;
     color: #bcbaba;
@@ -540,6 +557,9 @@ a>span:after {
 }
 .right_card a{
     margin-right: 15px;
+}
+.right_card a:hover svg{
+    fill:#54ff6e;
 }
 
 
@@ -613,6 +633,7 @@ a>span:after {
     margin-right: 10px;
     border-radius: 5px;
     display: flex;
+    border:1px solid transparent;
 }
 
 .keep_in_touch .main_box_keep .links a svg {
@@ -620,7 +641,9 @@ a>span:after {
     fill: #54ff6e;
     background-color: transparent;
 }
-
+.keep_in_touch .main_box_keep .links a:hover{
+    border: 1px solid white;
+}
 
 /* Footer */
 .footer {

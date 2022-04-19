@@ -165,37 +165,13 @@ body {
     font-weight: 700;
     display: grid;
     place-items: center;
+    border: 1px solid transparent;
+    border-radius: 5px;
+}
+.navigation .navbar_link .hover-3:hover{
+    border:1px solid rgb(255, 255, 255);
 }
 
-.navigation .navbar_link a,
-a>span {
-    position: relative;
-    color: inherit;
-    text-decoration: none;
-    line-height: 24px;
-}
-
-.navigation .navbar_link a:before,
-a:after,
-a>span:before,
-a>span:after {
-    content: '';
-    position: absolute;
-    transition: transform .5s ease;
-}
-
-.navigation .navbar_link .hover-3:before {
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    height: 5px;
-    background: #54ff6e;
-    transform: translateX(-101%);
-}
-
-.navigation .navbar_link .hover-3:hover:before {
-    transform: translateX(0);
-}
 
 .navigation .navbar_link .active {
     color:#54ff6e;
