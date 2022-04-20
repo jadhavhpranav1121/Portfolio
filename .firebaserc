@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "fir-91088"
+  },
+  "targets": {
+    "fir-91088": {
+      "hosting": {
+        "pranavj": [
+          "fir-91088"
+        ]
+      }
+    }
   }
 }
