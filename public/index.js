@@ -16,7 +16,7 @@ function search_function() {
     var input, filter, ul, li, a, i, txtValue;
     input = document.getElementById("input_project");
     filter = input.value.toUpperCase();
-    li = document.getElementsByClassName("card");
+    li = document.getElementsByClassName("cards_item");
 	card_close=document.getElementsByClassName("card_close")[0];
 	var flag=false;
     for (i = 0; i < li.length; i++) {
