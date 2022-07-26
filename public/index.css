@@ -5,6 +5,7 @@
     background-color: rgb(0, 0, 0);
     color: white;
     word-wrap: break-word;
+    
 }
 :root{
     --font-fix-size:20px;
@@ -20,6 +21,7 @@ html {
 body {
     font-family: 'Noto Sans', sans-serif;
     position: relative;
+    width:100%;
 }
 
 
@@ -339,7 +341,7 @@ a>span:after {
 
 .about_me_section .photos {
     display: flex;
-    width: 50%;
+    /* width: 50%; */
     margin-left: 150px;
     align-items: center;
     border-radius: 50%;
@@ -841,4 +843,3 @@ a>span:after {
         display: none;
     }
 }
-
