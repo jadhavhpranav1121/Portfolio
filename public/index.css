@@ -748,6 +748,9 @@ a>span:after {
     .about_me_section .photos{
         margin-left:0;
     }
+    .skills_section,.project_section,.keep_in_touch,footer{
+        width: 715px;
+    }
 }
 
 .menu-toggle{
