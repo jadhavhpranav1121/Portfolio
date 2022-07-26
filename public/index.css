@@ -305,9 +305,10 @@ a>span:after {
 /* About Us section */
 
 .about_me_section {
-    display: flex;
     margin:120px 0px;
-    padding: 5% 5%;
+    width: 100vw;
+    display: flex;
+    align-items: center;
 }
 
 .about_me {
@@ -342,6 +343,7 @@ a>span:after {
 }
 
 .about_me_section .photos {
+    
     display: flex;
     /* width: 50%; */
     margin-left: 150px;
@@ -677,7 +679,7 @@ a>span:after {
     width: 100%;
     line-height: 1.5;
     font-size: var(--font-fix-size);
-    padding: 5% 10%;
+    
 }
 
 .floatingNav {
@@ -739,6 +741,7 @@ a>span:after {
         flex-direction: column;
         align-items: center;
         width:800px;
+        justify-content: center;
     }    
     .about_me{
         width: 90%;
@@ -760,8 +763,14 @@ a>span:after {
     }
 }
 @media screen and (max-width: 744px){
-    .skills_section,.about_me_section{
+    .skills_section{
+        width: 710px;
+    }
+    .about_me_section{
         width: 639px;
+    }
+    .name_section{
+        width: 600px;
     }
     /* .skills_section,.project_section,.keep_in_touch,footer{
        
