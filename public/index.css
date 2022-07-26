@@ -808,8 +808,9 @@ a>span:after {
     align-items: center;
     visibility: hidden;
 }
-.full-screen-navigation ul{
+.home-toggle.active .full-screen-navigation ul{
     display:flex;
+
     justify-content: center;
     align-items: center;
     flex-direction: column;
@@ -820,9 +821,14 @@ a>span:after {
     visibility: hidden;
     transition: 0.5s;
     transition-delay: 0s;
+    text-align: center;
+}
+.full-screen-navigation ul{
+    text-align: center;
 }
 .full-screen-navigation ul li{
     list-style: none;
+    background: #54ff6e;
 }
 .full-screen-navigation ul li a{
     text-decoration: none;

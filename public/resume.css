@@ -244,6 +244,7 @@ body {
     height: 80px;
     width: 100%;
     line-height: 1.5;
+    padding: 5% 10%;
     font-size: var(--font-fix-size);
 }
 
@@ -347,7 +348,7 @@ body {
     align-items: center;
     visibility: hidden;
 }
-.full-screen-navigation ul{
+.home-toggle.active  .full-screen-navigation ul{
     display:flex;
     justify-content: center;
     align-items: center;
@@ -362,6 +363,7 @@ body {
 }
 .full-screen-navigation ul li{
     list-style: none;
+    background: #54ff6e;
 }
 .full-screen-navigation ul li a{
     text-decoration: none;

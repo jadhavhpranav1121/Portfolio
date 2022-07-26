@@ -441,6 +441,7 @@ section{
     bottom: 0;
     height: 80px;
     width: 100%;
+    padding: 5% 10%;
     line-height: 1.5;
     font-size: var(--font-fix-size);
 }
@@ -482,7 +483,7 @@ section{
     align-items: center;
     visibility: hidden;
 }
-.full-screen-navigation ul{
+.home-toggle.active .full-screen-navigation ul{
     display:flex;
     justify-content: center;
     align-items: center;
@@ -497,6 +498,7 @@ section{
 }
 .full-screen-navigation ul li{
     list-style: none;
+    background: #54ff6e;
 }
 .full-screen-navigation ul li a{
     text-decoration: none;
