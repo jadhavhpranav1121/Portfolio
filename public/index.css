@@ -307,7 +307,7 @@ a>span:after {
 .about_me_section {
     display: flex;
     margin:120px 0px;
-    padding: 5% 10%;
+    padding: 5% 5%;
 }
 
 .about_me {
@@ -738,7 +738,7 @@ a>span:after {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 715px;
+        width:800px;
     }    
     .about_me{
         width: 90%;
@@ -748,11 +748,25 @@ a>span:after {
     .about_me_section .photos{
         margin-left:0;
     }
-    .skills_section,.project_section,.keep_in_touch,footer{
+    .skills_section
+    {
+        width: 800px;
+    }
+    .project_section,.keep_in_touch,footer{
         width: 715px;
     }
+    .chart{
+        width: 100%;
+    }
 }
-
+@media screen and (max-width: 744px){
+    .skills_section,.about_me_section{
+        width: 639px;
+    }
+    /* .skills_section,.project_section,.keep_in_touch,footer{
+       
+    } */
+}
 .menu-toggle{
     position: relative;
     width: 50px;
