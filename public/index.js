@@ -1,8 +1,4 @@
-function loader(){
-	// var preloader=document.getElementsByClassName('lds-ellipsis');
-    // preloader[0].style.display='none';
-	// body.style.display="block";
-}
+
 window.addEventListener("scroll",function(){
 	var header=document.querySelector(".navigation");
 	header.classList.toggle("sticky",window.scrollY>0);
