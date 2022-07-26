@@ -14,7 +14,7 @@
 }
 html {
     position: relative;
-    min-height: 100%;
+    height: 100%;
     overflow-x:hidden;
 }
 
@@ -22,6 +22,7 @@ body {
     font-family: 'Noto Sans', sans-serif;
     position: relative;
     width:100%;
+    
 }
 
 
@@ -306,6 +307,7 @@ a>span:after {
 .about_me_section {
     display: flex;
     margin:120px 0px;
+    padding: 5% 10%;
 }
 
 .about_me {
@@ -438,6 +440,7 @@ a>span:after {
 /* Project Section */
 .project_section {
     line-height: 1.8;
+    padding: 5% 10%;
 }
 
 .project_section .heading_project {
@@ -624,6 +627,7 @@ a>span:after {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 5% 10%;
 }
 
 .keep_in_touch .main_box_keep {
@@ -673,6 +677,7 @@ a>span:after {
     width: 100%;
     line-height: 1.5;
     font-size: var(--font-fix-size);
+    padding: 5% 10%;
 }
 
 .floatingNav {
@@ -733,6 +738,7 @@ a>span:after {
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 715px;
     }    
     .about_me{
         width: 90%;
