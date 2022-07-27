@@ -757,7 +757,8 @@ a>span:after {
         width: 800px;
     }
     .project_section,.keep_in_touch,footer{
-        width:666px;
+        /* width:666px; */
+        width: 100%;
     }
     .chart{
         width: 100%;
@@ -773,9 +774,12 @@ a>span:after {
     .name_section{
         width: 600px;
     }
-    /* .skills_section,.project_section,.keep_in_touch,footer{
-       
-    } */
+    .project_section,.keep_in_touch{
+        width:45rem;
+    }
+    .footer{
+        width:45rem;
+    }
 }
 .menu-toggle{
     position: relative;
