@@ -332,11 +332,13 @@ section{
     display: flex;
     margin: 5px 0px;
     font-size: 13px;
+    flex-flow: wrap;
 }
 
 .tags .tag {
     padding: 0px 20px;
     margin-right: 10px;
+    margin-top:10px;
     display: inline-flex;
     vertical-align: top;
     -webkit-box-align: center;
@@ -357,6 +359,9 @@ section{
 .tags .tag .icon_tag{
     background-color: transparent;
     margin-right:5px;
+    display: flex;
+    justify-content: center;
+    
 }
 .tags .tag .icon_tag svg{
     background-color: transparent;

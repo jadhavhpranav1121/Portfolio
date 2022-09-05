@@ -526,11 +526,13 @@ a>span:after {
     margin: 5px 0px;
     font-size: 13px;
     display:flex;
+    flex-flow: wrap;
 }
 
 .tags .tag {
     padding: 0px 25px;
     margin-right: 10px;
+    margin-top:10px;
     display: inline-flex;
     vertical-align: top;
     -webkit-box-align: center;
@@ -551,6 +553,8 @@ a>span:after {
 .tags .tag .icon_tag{
     background-color: transparent;
     margin-right:5px;
+    display: flex;
+    justify-content: center;
 }
 .tags .tag .icon_tag svg{
     background-color: transparent;
