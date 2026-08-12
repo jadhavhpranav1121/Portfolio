@@ -1,0 +1,201 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --animate-marquee: marquee 40s linear infinite;
+}
+
+:root {
+  color-scheme: dark;
+  --radius: 0.75rem;
+
+  /* Dark-first engineering palette */
+  --background: oklch(0.16 0.008 265);
+  --foreground: oklch(0.96 0.004 260);
+
+  --card: oklch(0.2 0.01 265);
+  --card-foreground: oklch(0.96 0.004 260);
+
+  --popover: oklch(0.185 0.01 265);
+  --popover-foreground: oklch(0.96 0.004 260);
+
+  /* Electric indigo / violet-blue accent */
+  --primary: oklch(0.62 0.2 274);
+  --primary-foreground: oklch(0.98 0.005 260);
+
+  --secondary: oklch(0.26 0.012 265);
+  --secondary-foreground: oklch(0.96 0.004 260);
+
+  --muted: oklch(0.24 0.01 265);
+  --muted-foreground: oklch(0.68 0.015 265);
+
+  --accent: oklch(0.62 0.2 274);
+  --accent-foreground: oklch(0.98 0.005 260);
+
+  --destructive: oklch(0.62 0.21 25);
+
+  --border: oklch(1 0 0 / 9%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.62 0.2 274);
+
+  --glow: oklch(0.62 0.2 274 / 0.5);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: oklch(0.62 0.2 274 / 0.35);
+  }
+  /* Visible keyboard focus, never on mouse click */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.3 0.01 265);
+    border-radius: 999px;
+    border: 2px solid var(--background);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.4 0.02 265);
+  }
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+  .mono-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .text-glow {
+    text-shadow: 0 0 40px oklch(0.62 0.2 274 / 0.35);
+  }
+  /* subtle dotted grid background */
+  .bg-grid {
+    background-image: radial-gradient(
+      oklch(1 0 0 / 0.05) 1px,
+      transparent 1px
+    );
+    background-size: 28px 28px;
+  }
+  .border-glow {
+    box-shadow: 0 0 0 1px oklch(0.62 0.2 274 / 0.35),
+      0 0 40px -8px oklch(0.62 0.2 274 / 0.35);
+  }
+  .card-hover {
+    transition: transform 0.25s ease, border-color 0.25s ease,
+      box-shadow 0.25s ease, background-color 0.25s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-3px);
+    border-color: oklch(0.62 0.2 274 / 0.4);
+    box-shadow: 0 8px 40px -12px oklch(0.62 0.2 274 / 0.4);
+  }
+}
+
+/* ---- Animations ---- */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+.reveal.is-visible {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* dash flow along architecture connectors */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+.flow-line {
+  stroke-dasharray: 4 8;
+  animation: dash-flow 1s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+  }
+}

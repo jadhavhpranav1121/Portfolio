@@ -1,54 +1,62 @@
-# Pranav Jadhav — Software Engineer Portfolio
+# Pranav Jadhav — Portfolio
 
-Software Engineer with ~3 years of professional experience at Emerson, focused on Java, Spring Boot, backend engineering, full-stack development, SQL, distributed systems, and enterprise applications.
+Personal portfolio for **Pranav Jadhav**, Software Engineer (Java · Spring Boot · Distributed Systems · Angular).
 
-## Current Focus
+Live: [pranavj.web.app](https://pranavj.web.app)
 
-- Backend Engineering — Java 17, Spring Boot 3, Spring MVC, Spring Security, Hibernate/JPA
-- Full Stack — Angular, React, RxJS, TypeScript
-- Distributed Systems — Kafka, Redis, WebSockets, REST APIs, microservices
-- Data — SQL Server, Oracle, MySQL, PostgreSQL
-- DevOps — Docker, GitHub Actions, Jenkins, Kubernetes and Helm fundamentals
-- Enterprise Engineering — performance optimization, ETL, reporting, Clarity PPM integrations and automation
+## Stack
 
-## Professional Experience
+- **Next.js 16** (App Router, static export) + **React 19**
+- **Tailwind CSS 4**
+- **TypeScript**
+- Inter + JetBrains Mono via `next/font`
+- Deployed as static files to **Firebase Hosting**
 
-### Emerson Export Engineering Center — Software Engineer
-**Pune, India | 2023–Present**
+## Getting started
 
-Building and supporting enterprise applications across backend, frontend, data, reporting and automation. Work includes Java/Spring-based services, Angular/React interfaces, SQL Server and Oracle development, Power BI/Jaspersoft reporting, ETL, performance optimization and Clarity PPM customizations.
+```bash
+pnpm install
+pnpm dev
+```
 
-## Selected Engineering Projects
+The site runs at http://localhost:3000.
 
-### Expense Tracker — Microservices
-Spring Boot microservices architecture with authentication, expense processing, Kafka messaging, Redis, relational databases and AI-assisted data workflows.
+## Scripts
 
-### Wikipedia Search Engine
-Java/Spring Boot search engine built around Wikipedia data, inverted indexing and TF-IDF ranking, with phrase/proximity search work planned.
+| Command          | Description                                        |
+| ---------------- | -------------------------------------------------- |
+| `pnpm dev`       | Start the dev server                               |
+| `pnpm build`     | Production build + static export to `out/`         |
+| `pnpm typecheck` | Run `tsc --noEmit`                                 |
 
-### SmartDoc
-Document-oriented application demonstrating modern backend/API development and a separate UI application.
+## Project structure
 
-### SalesPulse
-Sales enablement platform work covering backend services, real-time features, messaging, data and application architecture.
+```
+app/                     Next.js App Router — layout, page, SEO routes
+  layout.tsx             Metadata, OpenGraph, Person JSON-LD, fonts
+  page.tsx               Section composition
+  robots.ts sitemap.ts   Statically generated robots.txt / sitemap.xml
+  globals.css            Design tokens, utilities, animations
+components/portfolio/    One component per section + shared primitives
+hooks/                   useReveal (scroll reveal), useCountUp (stat counters)
+lib/data.ts              All site content in one typed module
+public/                  Icons, OG image, resume PDF
+```
 
-## Engineering Highlights
+All copy, metrics, projects, skills and timeline entries live in
+[`lib/data.ts`](lib/data.ts) — edit content there rather than in components.
 
-- Emerson CTF — 1st Place (2025)
-- TCS CodeVita — AIR 478 (2022)
-- Competitive programming experience across LeetCode, Codeforces and GeeksforGeeks
-- Hands-on work with performance-sensitive SQL, REST APIs, Spring internals, concurrency, security and system design
+## Deployment
 
-## Education
+```bash
+pnpm build
+firebase deploy --only hosting
+```
 
-**B.E. Computer Science — AISSMS College of Engineering, Pune**  
-2019–2023 | CGPA: 9.16
+`firebase.json` serves the exported `out/` directory.
 
-## Career Direction
+## Resume
 
-Currently focused on Java Backend / Java + Angular Software Engineer opportunities where I can work on scalable APIs, microservices, distributed systems and production-grade enterprise applications.
-
-## Links
-
-- GitHub: https://github.com/jadhavhpranav1121
-- Portfolio source: this repository
+The resume buttons use `profile.resume` in [`lib/data.ts`](lib/data.ts), which
+currently points at the Google Drive link carried over from the previous
+portfolio. Update it there, or drop a PDF in `public/` and reference it.
