@@ -1,7 +1,10 @@
-import { achievements } from '@/lib/data'
+'use client'
+
+import { useContent } from '@/lib/content'
 import { Reveal, Section, SectionHeader } from './primitives'
 
 export function Achievements() {
+  const { achievements } = useContent()
   return (
     <Section id="achievements">
       <SectionHeader

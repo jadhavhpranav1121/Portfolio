@@ -1,7 +1,10 @@
-import { skillGroups } from '@/lib/data'
+'use client'
+
+import { useContent } from '@/lib/content'
 import { Reveal, Section, SectionHeader } from './primitives'
 
 export function Skills() {
+  const { skillGroups } = useContent()
   return (
     <Section id="skills">
       <SectionHeader

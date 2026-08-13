@@ -1,5 +1,8 @@
+'use client'
+
 import { ChevronRight } from 'lucide-react'
-import { caseStudies, type CaseStudy } from '@/lib/data'
+import { type CaseStudy } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { MetricArrow, Reveal, Section, SectionHeader, TechBadge } from './primitives'
 
 function StepFlow({ steps }: { steps: string[] }) {
@@ -65,6 +68,7 @@ function Card({ study, delay }: { study: CaseStudy; delay: number }) {
 }
 
 export function CaseStudies() {
+  const { caseStudies } = useContent()
   return (
     <Section id="engineering" className="relative">
       <SectionHeader

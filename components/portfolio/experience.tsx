@@ -1,9 +1,12 @@
+'use client'
+
 import { MapPin } from 'lucide-react'
-import { impactGroups, profile } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { cn } from '@/lib/utils'
 import { MetricArrow, Reveal, Section, SectionHeader } from './primitives'
 
 export function Experience() {
+  const { impactGroups, profile } = useContent()
   return (
     <Section id="experience">
       <SectionHeader

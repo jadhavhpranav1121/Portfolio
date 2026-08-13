@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Inter, JetBrains_Mono } from 'next/font/google'
+import { ContentProvider } from '@/lib/content'
 import { siteUrl } from '@/lib/data'
 import './globals.css'
 
@@ -126,7 +127,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
-        {children}
+        <ContentProvider>{children}</ContentProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

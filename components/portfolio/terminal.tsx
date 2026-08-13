@@ -1,10 +1,11 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { terminalLines } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { useReveal } from '@/hooks/use-reveal'
 
 export function Terminal() {
+  const { terminalLines } = useContent()
   const { ref, visible } = useReveal<HTMLDivElement>()
   const [step, setStep] = useState(-1)
   const started = useRef(false)
@@ -26,7 +27,7 @@ export function Terminal() {
       if (i >= terminalLines.length) clearInterval(id)
     }, 650)
     return () => clearInterval(id)
-  }, [visible])
+  }, [visible, terminalLines])
 
   return (
     <div
