@@ -2,12 +2,13 @@
 
 import { useEffect, useRef } from 'react'
 import { ArrowDown, ArrowUpRight, Download, Mail } from 'lucide-react'
-import { heroTech, profile } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { GithubIcon, LinkedinIcon } from './brand-icons'
 import { HeroDiagram } from './hero-diagram'
 import { TechBadge } from './primitives'
 
 export function Hero() {
+  const { heroTech, profile } = useContent()
   const glowRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {

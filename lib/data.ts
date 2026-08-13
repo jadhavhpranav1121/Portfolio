@@ -1,6 +1,19 @@
 export const siteUrl = 'https://pranavj.web.app'
 
-export const profile = {
+export type Profile = {
+  name: string
+  initials: string
+  role: string
+  company: string
+  location: string
+  tenure: string
+  email: string
+  github: string
+  linkedin: string
+  resume: string
+}
+
+export const profile: Profile = {
   name: 'Pranav Jadhav',
   initials: 'PJ',
   role: 'Software Engineer',
@@ -15,7 +28,9 @@ export const profile = {
   resume: 'https://drive.google.com/file/d/1kvAZBWRLi407vCeMW20D7dGJfGwRKLk0/view',
 }
 
-export const navLinks = [
+export type NavLink = { label: string; href: string }
+
+export const navLinks: NavLink[] = [
   { label: 'Home', href: '#home' },
   { label: 'Experience', href: '#experience' },
   { label: 'Engineering', href: '#engineering' },
@@ -27,7 +42,7 @@ export const navLinks = [
   { label: 'Contact', href: '#contact' },
 ]
 
-export const heroTech = [
+export const heroTech: string[] = [
   'Java 17',
   'Spring Boot',
   'Kafka',
@@ -37,7 +52,9 @@ export const heroTech = [
   'AWS',
 ]
 
-export const stats = [
+export type Stat = { value: string; unit: string; label: string; tag: string }
+
+export const stats: Stat[] = [
   { value: '3+', unit: 'yrs', label: 'Software Engineering', tag: 'EXPERIENCE' },
   { value: '1st', unit: 'place', label: 'Emerson Global CTF', tag: 'CYBERSECURITY' },
   { value: '478', unit: 'AIR', label: 'TCS CodeVita 2022', tag: 'COMPETITIVE' },
@@ -274,7 +291,15 @@ export const projects: Project[] = [
   },
 ]
 
-export const achievements = [
+export type Achievement = {
+  value: string
+  title: string
+  subtitle: string
+  detail: string
+  tag: string
+}
+
+export const achievements: Achievement[] = [
   {
     value: '1st',
     title: 'Emerson Global CTF',
@@ -298,7 +323,9 @@ export const achievements = [
   },
 ]
 
-export const timeline = [
+export type TimelineItem = { year: string; title: string; detail: string }
+
+export const timeline: TimelineItem[] = [
   { year: '2019', title: 'Started BE Computer Science', detail: 'AISSMS Engineering College · CGPA 9.16' },
   { year: '2022', title: 'TCS CodeVita — AIR 478', detail: 'Global competitive programming rank' },
   { year: '2023', title: 'Joined Emerson as Intern', detail: 'Emerson Export Engineering Center, Pune' },
@@ -307,9 +334,47 @@ export const timeline = [
   { year: '2026', title: 'Deepening distributed systems', detail: 'Backend reliability & scalability focus' },
 ]
 
-export const terminalLines = [
+export type TerminalLine = { cmd: string; out: string }
+
+export const terminalLines: TerminalLine[] = [
   { cmd: 'whoami', out: 'Pranav Jadhav' },
   { cmd: 'role', out: 'Software Engineer' },
   { cmd: 'stack', out: 'Java · Spring Boot · Kafka · PostgreSQL · Angular' },
   { cmd: 'focus', out: 'Distributed Systems' },
 ]
+
+/**
+ * The full editable content of the site, in one object.
+ *
+ * This is the shape stored in Firestore (`site/content`) and edited from
+ * /admin. The values above are the built-in fallback: if Firestore is
+ * unconfigured, unreachable or empty, the site renders these instead, so it
+ * can never end up blank.
+ */
+export type SiteContent = {
+  profile: Profile
+  navLinks: NavLink[]
+  heroTech: string[]
+  stats: Stat[]
+  impactGroups: ImpactGroup[]
+  caseStudies: CaseStudy[]
+  skillGroups: SkillGroup[]
+  projects: Project[]
+  achievements: Achievement[]
+  timeline: TimelineItem[]
+  terminalLines: TerminalLine[]
+}
+
+export const defaultContent: SiteContent = {
+  profile,
+  navLinks,
+  heroTech,
+  stats,
+  impactGroups,
+  caseStudies,
+  skillGroups,
+  projects,
+  achievements,
+  timeline,
+  terminalLines,
+}

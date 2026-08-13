@@ -12,7 +12,7 @@ import {
   Trophy,
   User,
 } from 'lucide-react'
-import { profile } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { GithubIcon, LinkedinIcon } from './brand-icons'
 
 type Command = {
@@ -25,6 +25,7 @@ type Command = {
 export const OPEN_PALETTE_EVENT = 'open-command-palette'
 
 export function CommandPalette() {
+  const { profile } = useContent()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -52,7 +53,7 @@ export function CommandPalette() {
       { label: 'Open LinkedIn', hint: 'external', icon: LinkedinIcon, run: () => open_(profile.linkedin) },
       { label: 'Download / View Resume', hint: 'external', icon: FileText, run: () => open_(profile.resume) },
     ],
-    [go, open_],
+    [go, open_, profile],
   )
 
   const filtered = useMemo(() => {

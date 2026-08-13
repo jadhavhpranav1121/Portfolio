@@ -1,8 +1,11 @@
-import { timeline } from '@/lib/data'
+'use client'
+
+import { useContent } from '@/lib/content'
 import { Reveal, Section, SectionHeader } from './primitives'
 import { Terminal } from './terminal'
 
 export function About() {
+  const { timeline } = useContent()
   return (
     <Section id="about">
       <SectionHeader

@@ -1,9 +1,12 @@
+'use client'
+
 import { ArrowUpRight, Mail, MapPin } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from './brand-icons'
-import { profile } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { Reveal, Section, SectionHeader } from './primitives'
 
 export function Contact() {
+  const { profile } = useContent()
   return (
     <Section id="contact">
       <SectionHeader

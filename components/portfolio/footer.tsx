@@ -1,8 +1,11 @@
+'use client'
+
 import { Mail } from 'lucide-react'
-import { profile } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { GithubIcon, LinkedinIcon } from './brand-icons'
 
 export function Footer() {
+  const { profile } = useContent()
   const year = new Date().getFullYear()
   return (
     <footer className="border-t border-border">

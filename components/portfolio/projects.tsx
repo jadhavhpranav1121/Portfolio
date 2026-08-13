@@ -1,5 +1,8 @@
+'use client'
+
 import { ArrowUpRight, Lock } from 'lucide-react'
-import { projects, type Project } from '@/lib/data'
+import { type Project } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { Reveal, Section, SectionHeader, TechBadge } from './primitives'
 import { GithubIcon } from './brand-icons'
 
@@ -39,6 +42,7 @@ function ProjectCard({ project, delay }: { project: Project; delay: number }) {
 }
 
 export function Projects() {
+  const { projects } = useContent()
   const earlier = projects.filter((p) => !p.featured)
 
   return (

@@ -1,6 +1,6 @@
 'use client'
 
-import { stats } from '@/lib/data'
+import { useContent } from '@/lib/content'
 import { useCountUp } from '@/hooks/use-count-up'
 import { Reveal } from './primitives'
 
@@ -25,6 +25,7 @@ function StatValue({ value, unit }: { value: string; unit: string }) {
 }
 
 export function StatsStrip() {
+  const { stats } = useContent()
   return (
     <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
       <Reveal className="grid grid-cols-2 divide-border overflow-hidden rounded-xl border border-border bg-card/60 backdrop-blur-sm md:grid-cols-4 md:divide-x">
