@@ -47,28 +47,18 @@ export function Section({
 }
 
 export function SectionHeader({
-  index,
-  total,
-  eyebrow,
   title,
   description,
 }: {
-  index: string
-  total: string
-  eyebrow: string
+  index?: string
+  total?: string
+  eyebrow?: string
   title: string
   description?: string
 }) {
   return (
     <Reveal className="mb-12 sm:mb-16">
-      <div className="flex items-center gap-3">
-        <span className="mono-label text-primary">{eyebrow}</span>
-        <span className="h-px flex-1 bg-border" />
-        <span className="mono-label text-muted-foreground">
-          {index} / {total}
-        </span>
-      </div>
-      <h2 className="mt-5 text-pretty text-3xl font-semibold tracking-tight sm:text-4xl md:text-[2.75rem]">
+      <h2 className=" text-pretty text-3xl font-semibold tracking-tight sm:text-4xl md:text-[2.75rem]">
         {title}
       </h2>
       {description ? (

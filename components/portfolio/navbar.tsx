@@ -56,7 +56,7 @@ export function Navbar() {
         className={cn(
           'flex w-full max-w-6xl items-center justify-between gap-4 rounded-xl border px-4 py-2.5 transition-all duration-300',
           scrolled
-            ? 'border-border bg-background/70 shadow-lg shadow-black/20 backdrop-blur-xl'
+            ? 'border-border bg-background shadow-[0_1px_2px_rgba(0,0,0,0.05)]'
             : 'border-transparent bg-transparent',
         )}
         aria-label="Primary"
@@ -145,7 +145,7 @@ export function Navbar() {
       {menuOpen ? (
         <div
           id="mobile-menu"
-          className="absolute left-4 right-4 top-[4.5rem] rounded-xl border border-border bg-popover/95 p-2 shadow-2xl backdrop-blur-xl lg:hidden"
+          className="absolute left-4 right-4 top-[4.5rem] rounded-xl border border-border bg-popover p-2 shadow-[0_1px_2px_rgba(0,0,0,0.05)] lg:hidden"
         >
           <ul className="grid gap-1">
             {navLinks.map((link) => (

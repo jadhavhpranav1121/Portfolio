@@ -49,7 +49,7 @@ export function Hero() {
 
       <div className="mx-auto grid w-full max-w-6xl grid-cols-1 items-center gap-12 px-5 pb-20 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-8 lg:pb-28">
         <div>
-          <div className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs backdrop-blur-sm">
+          <div className="reveal is-visible inline-flex items-center gap-2 rounded-full border border-border bg-secondary px-3 py-1.5 text-xs">
             <span className="relative flex size-2">
               <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-70" />
               <span className="relative inline-flex size-2 rounded-full bg-primary" />
@@ -62,7 +62,7 @@ export function Hero() {
 
           <h1 className="mt-6 text-balance text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
             Software Engineer building{' '}
-            <span className="bg-gradient-to-r from-primary via-primary to-indigo-300 bg-clip-text text-transparent text-glow">
+            <span className="text-primary">
               scalable backend systems.
             </span>
           </h1>

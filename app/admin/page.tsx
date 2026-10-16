@@ -94,7 +94,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
-      <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-border bg-background">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-3 px-4 py-3">
           <div className="mr-auto">
             <h1 className="font-mono text-sm uppercase tracking-wider">Portfolio content</h1>

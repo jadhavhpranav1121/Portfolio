@@ -7,19 +7,17 @@ import { MetricArrow, Reveal, Section, SectionHeader, TechBadge } from './primit
 
 function StepFlow({ steps }: { steps: string[] }) {
   return (
-    <ol className="mt-4 space-y-1.5">
+    <ul className="mt-4 space-y-1.5">
       {steps.map((step, i) => (
         <li key={step} className="flex items-center gap-2">
-          <span className="flex size-5 shrink-0 items-center justify-center rounded border border-border bg-secondary/60 font-mono text-[10px] text-primary">
-            {i + 1}
-          </span>
+          <span className="size-1.5 shrink-0 rounded-full bg-primary" aria-hidden />
           <span className="font-mono text-xs text-muted-foreground">{step}</span>
           {i < steps.length - 1 ? (
             <ChevronRight className="ml-auto size-3 text-border" aria-hidden />
           ) : null}
         </li>
       ))}
-    </ol>
+    </ul>
   )
 }
 

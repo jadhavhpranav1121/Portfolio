@@ -14,7 +14,7 @@ const nodes = [
 export function HeroDiagram() {
   return (
     <div
-      className="relative w-full rounded-xl border border-border bg-card/60 p-4 backdrop-blur-sm sm:p-5"
+      className="relative w-full rounded-xl border border-border bg-card p-4 sm:p-5"
       aria-label="Distributed system request flow: Client to API Gateway to Spring Boot to Kafka to Workers to PostgreSQL and Redis"
       role="img"
     >

@@ -32,7 +32,7 @@ export function Terminal() {
   return (
     <div
       ref={ref}
-      className="overflow-hidden rounded-xl border border-border bg-[oklch(0.13_0.008_265)] font-mono text-sm shadow-xl"
+      className="overflow-hidden rounded-xl border border-border bg-[var(--terminal)] font-mono text-sm shadow-xl"
     >
       <div className="flex items-center gap-2 border-b border-border bg-secondary/30 px-4 py-2.5">
         <span className="size-3 rounded-full bg-destructive/70" aria-hidden />

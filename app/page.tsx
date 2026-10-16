@@ -1,7 +1,6 @@
 import { Navbar } from '@/components/portfolio/navbar'
 import { CommandPalette } from '@/components/portfolio/command-palette'
 import { Hero } from '@/components/portfolio/hero'
-import { StatsStrip } from '@/components/portfolio/stats-strip'
 import { Experience } from '@/components/portfolio/experience'
 import { CaseStudies } from '@/components/portfolio/case-studies'
 import { Architecture } from '@/components/portfolio/architecture'
@@ -25,7 +24,6 @@ export default function Page() {
       <CommandPalette />
       <main>
         <Hero />
-        <StatsStrip />
         <Experience />
         <CaseStudies />
         <Architecture />
