@@ -1,56 +1,36 @@
 import type { SiteContent } from '@/lib/data'
 
-function cleanMetric<T extends Record<string, string | undefined>>(metric?: T) {
-  if (!metric) return undefined
-  const entries = Object.entries(metric).filter(([, v]) => typeof v === 'string' && v.trim())
-  return entries.length ? (Object.fromEntries(entries) as T) : undefined
-}
-
-function omitUndefined<T extends object>(obj: T): T {
-  return Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== undefined)) as T
-}
-
 /**
- * Prepares edited content for Firestore: drops empty optional fields and
- * `undefined` values (which Firestore rejects), and trims blank list entries
- * left behind by the "Add" buttons.
+ * Prepares edited content for Firestore: drops `undefined` values (which
+ * Firestore rejects), empty optional objects such as a blank metric, and blank
+ * list entries left behind by the "Add" buttons.
  */
 export function sanitizeContent(content: SiteContent): SiteContent {
-  const keep = (s: string) => s.trim().length > 0
+  return clean(content) as SiteContent
+}
 
-  return {
-    profile: content.profile,
-    navLinks: content.navLinks.filter((l) => keep(l.label)),
-    heroTech: content.heroTech.filter(keep),
-    stats: content.stats,
-    impactGroups: content.impactGroups.map((group) => ({
-      ...group,
-      items: group.items
-        .filter((item) => keep(item.name) || keep(item.detail))
-        .map((item) => omitUndefined({ ...item, metric: cleanMetric(item.metric) })),
-    })),
-    caseStudies: content.caseStudies.map((study) =>
-      omitUndefined({
-        ...study,
-        result: cleanMetric(study.result),
-        tech: study.tech.filter(keep),
-        steps: study.steps?.filter(keep).length ? study.steps.filter(keep) : undefined,
-      }),
-    ),
-    skillGroups: content.skillGroups.map((group) => ({
-      ...group,
-      items: group.items.filter(keep),
-    })),
-    projects: content.projects.map((project) =>
-      omitUndefined({
-        ...project,
-        tech: project.tech.filter(keep),
-        github: project.github?.trim() ? project.github : undefined,
-        demo: project.demo?.trim() ? project.demo : undefined,
-      }),
-    ),
-    achievements: content.achievements,
-    timeline: content.timeline,
-    terminalLines: content.terminalLines.filter((l) => keep(l.cmd) || keep(l.out)),
+function clean(value: unknown): unknown {
+  if (Array.isArray(value)) {
+    return value
+      .map(clean)
+      .filter((v) => v !== undefined && !(typeof v === 'string' && !v.trim()))
   }
+  if (value && typeof value === 'object') {
+    const entries = Object.entries(value)
+      .map(([k, v]) => [k, METRIC_KEYS.has(k) ? cleanMetric(v) : clean(v)] as const)
+      .filter(([, v]) => v !== undefined)
+    // Keep empty strings on objects (a cleared heading is a real edit), but
+    // collapse objects that ended up with nothing in them.
+    return entries.length ? Object.fromEntries(entries) : undefined
+  }
+  return value
+}
+
+const METRIC_KEYS = new Set(['metric', 'result'])
+
+/** A metric with only blank fields is no metric at all. */
+function cleanMetric(value: unknown): unknown {
+  if (!value || typeof value !== 'object') return undefined
+  const entries = Object.entries(value).filter(([, v]) => typeof v === 'string' && v.trim())
+  return entries.length ? Object.fromEntries(entries) : undefined
 }

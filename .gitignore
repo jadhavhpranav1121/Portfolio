@@ -22,3 +22,5 @@ next-env.d.ts
 # Local tooling
 .claude/
 .firebase/
+# Built from content/*.md by scripts/build-content.ts
+lib/content.generated.json

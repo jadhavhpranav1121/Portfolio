@@ -7,12 +7,15 @@ import {
   Cpu,
   FileText,
   FolderGit2,
+  Layers,
   Mail,
   Search,
   Trophy,
   User,
+  Wrench,
 } from 'lucide-react'
-import { useContent } from '@/lib/content'
+import { useContent, useVisibleSections } from '@/lib/content'
+import type { SectionId } from '@/lib/data'
 import { GithubIcon, LinkedinIcon } from './brand-icons'
 
 type Command = {
@@ -22,10 +25,22 @@ type Command = {
   run: () => void
 }
 
+const SECTION_ICONS: Partial<Record<SectionId, React.ElementType>> = {
+  experience: Briefcase,
+  engineering: Cpu,
+  architecture: Layers,
+  skills: Wrench,
+  projects: FolderGit2,
+  achievements: Trophy,
+  about: User,
+  contact: Mail,
+}
+
 export const OPEN_PALETTE_EVENT = 'open-command-palette'
 
 export function CommandPalette() {
   const { profile } = useContent()
+  const sections = useVisibleSections()
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
@@ -43,17 +58,17 @@ export function CommandPalette() {
 
   const commands: Command[] = useMemo(
     () => [
-      { label: 'Go to Experience', hint: 'section', icon: Briefcase, run: () => go('#experience') },
-      { label: 'Go to Engineering Highlights', hint: 'section', icon: Cpu, run: () => go('#engineering') },
-      { label: 'Go to Projects', hint: 'section', icon: FolderGit2, run: () => go('#projects') },
-      { label: 'Go to Achievements', hint: 'section', icon: Trophy, run: () => go('#achievements') },
-      { label: 'Go to About', hint: 'section', icon: User, run: () => go('#about') },
-      { label: 'Contact Pranav', hint: 'section', icon: Mail, run: () => go('#contact') },
+      ...sections.map((s) => ({
+        label: `Go to ${s.nav}`,
+        hint: 'section',
+        icon: SECTION_ICONS[s.id] ?? ArrowRight,
+        run: () => go(`#${s.id}`),
+      })),
       { label: 'Open GitHub', hint: 'external', icon: GithubIcon, run: () => open_(profile.github) },
       { label: 'Open LinkedIn', hint: 'external', icon: LinkedinIcon, run: () => open_(profile.linkedin) },
       { label: 'Download / View Resume', hint: 'external', icon: FileText, run: () => open_(profile.resume) },
     ],
-    [go, open_, profile],
+    [go, open_, profile, sections],
   )
 
   const filtered = useMemo(() => {

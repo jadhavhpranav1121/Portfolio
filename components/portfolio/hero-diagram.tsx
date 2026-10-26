@@ -1,39 +1,27 @@
 'use client'
 
-import { Cloud, Database, Layers, Server, Users, Workflow } from 'lucide-react'
-
-const nodes = [
-  { label: 'Client', sub: 'Angular', icon: Users, tag: 'HTTP' },
-  { label: 'API Gateway', sub: 'Spring Cloud', icon: Workflow, tag: 'JWT' },
-  { label: 'Spring Boot', sub: 'Services', icon: Server, tag: 'REST' },
-  { label: 'Kafka', sub: 'Event Bus', icon: Layers, tag: 'EVENTS' },
-  { label: 'Workers', sub: 'Consumers', icon: Cloud, tag: 'ASYNC' },
-  { label: 'PostgreSQL / Redis', sub: 'Persistence · Cache', icon: Database, tag: 'STATE' },
-]
+import { useContent } from '@/lib/content'
+import { iconFor } from './icons'
 
 export function HeroDiagram() {
+  const { hero } = useContent()
+  const nodes = hero.flow
+  if (!nodes.length) return null
   return (
     <div
-      className="relative w-full rounded-xl border border-border bg-card/60 p-4 backdrop-blur-sm sm:p-5"
-      aria-label="Distributed system request flow: Client to API Gateway to Spring Boot to Kafka to Workers to PostgreSQL and Redis"
+      className="relative w-full rounded-xl border border-border bg-card/60 p-4 sm:p-5"
+      aria-label={`${hero.flowTitle}: ${nodes.map((n) => n.label).join(' → ')}`}
       role="img"
     >
-      <div className="mb-4 flex items-center justify-between">
-        <span className="mono-label text-muted-foreground">SYSTEM.FLOW</span>
-        <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/25 bg-primary/10 px-2 py-0.5 font-mono text-[10px] text-primary">
-          <span className="relative flex size-1.5">
-            <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-60" />
-            <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
-          </span>
-          LIVE
-        </span>
-      </div>
+      {hero.flowTitle ? (
+        <p className="mb-4 mono-label text-muted-foreground">{hero.flowTitle}</p>
+      ) : null}
 
       <ul className="grid gap-2">
         {nodes.map((n, i) => {
-          const Icon = n.icon
+          const Icon = iconFor(n.icon)
           return (
-            <li key={n.label}>
+            <li key={n.label + i}>
               <div className="group flex items-center gap-3 rounded-lg border border-border bg-secondary/40 px-3 py-2.5 transition-colors hover:border-primary/40">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-md border border-border bg-background text-primary">
                   <Icon className="size-4" aria-hidden />

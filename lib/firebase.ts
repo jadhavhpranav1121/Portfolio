@@ -16,6 +16,12 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
 
+/**
+ * The only account allowed into /admin. Must match the email in
+ * firestore.rules, which is what actually enforces write access.
+ */
+export const OWNER_EMAIL = 'pranavhj23@gmail.com'
+
 /** The document holding all editable site content. */
 export const CONTENT_PATH = { collection: 'site', doc: 'content' } as const
 

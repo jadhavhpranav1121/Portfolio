@@ -1,14 +1,22 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Command, Menu, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useContent } from '@/lib/content'
+import { useContent, useVisibleSections } from '@/lib/content'
 import { GithubIcon, LinkedinIcon } from './brand-icons'
 import { OPEN_PALETTE_EVENT } from './command-palette'
 
 export function Navbar() {
-  const { navLinks, profile } = useContent()
+  const { profile } = useContent()
+  const sections = useVisibleSections()
+  const navLinks = useMemo(
+    () => [
+      { label: 'Home', href: '#home' },
+      ...sections.map((s) => ({ label: s.nav, href: `#${s.id}` })),
+    ],
+    [sections],
+  )
   const [scrolled, setScrolled] = useState(false)
   const [active, setActive] = useState('home')
   const [menuOpen, setMenuOpen] = useState(false)

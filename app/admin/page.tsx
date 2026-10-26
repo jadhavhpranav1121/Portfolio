@@ -5,10 +5,19 @@ import { ArrowUpRight, LogOut, RotateCcw, Save } from 'lucide-react'
 import type { User } from 'firebase/auth'
 import { ContentEditor } from '@/components/admin/content-editor'
 import { Button, Field } from '@/components/admin/fields'
-import { mergeContent } from '@/lib/content'
+import { isCurrent, mergeContent } from '@/lib/content'
 import { sanitizeContent } from '@/lib/content-io'
-import { defaultContent, type SiteContent } from '@/lib/data'
-import { CONTENT_PATH, getDb, getFirebaseAuth, isFirebaseConfigured } from '@/lib/firebase'
+import { contentVersion, defaultContent, type SiteContent } from '@/lib/data'
+import {
+  CONTENT_PATH,
+  getDb,
+  getFirebaseAuth,
+  isFirebaseConfigured,
+  OWNER_EMAIL,
+} from '@/lib/firebase'
+
+const isOwner = (user: User) =>
+  user.emailVerified && user.email?.toLowerCase() === OWNER_EMAIL
 
 type Status = { kind: 'idle' | 'busy' | 'ok' | 'error'; message?: string }
 
@@ -19,6 +28,7 @@ export default function AdminPage() {
   const [loaded, setLoaded] = useState(false)
   const [dirty, setDirty] = useState(false)
   const [status, setStatus] = useState<Status>({ kind: 'idle' })
+  const [denied, setDenied] = useState<string | null>(null)
 
   useEffect(() => {
     const auth = getFirebaseAuth()
@@ -29,7 +39,16 @@ export default function AdminPage() {
     let unsubscribe: (() => void) | undefined
     void (async () => {
       const { onAuthStateChanged } = await import('firebase/auth')
+      const { signOut } = await import('firebase/auth')
       unsubscribe = onAuthStateChanged(auth, (next) => {
+        // Only the owner gets in. Anyone else is signed straight back out, so
+        // the editor never renders for them (firestore.rules blocks their
+        // writes regardless).
+        if (next && !isOwner(next)) {
+          setDenied(next.email ?? 'This account')
+          void signOut(auth)
+          return
+        }
         setUser(next)
         setAuthReady(true)
       })
@@ -46,9 +65,16 @@ export default function AdminPage() {
       const { doc, getDoc } = await import('firebase/firestore')
       try {
         const snapshot = await getDoc(doc(db, CONTENT_PATH.collection, CONTENT_PATH.doc))
-        setContent(snapshot.exists() ? mergeContent(snapshot.data()) : defaultContent)
+        const data = snapshot.exists() ? snapshot.data() : null
+        setContent(mergeContent(data))
         setLoaded(true)
         setDirty(false)
+        if (data && !isCurrent(data)) {
+          setStatus({
+            kind: 'idle',
+            message: 'The Markdown in content/ changed since your last publish — starting from it.',
+          })
+        }
       } catch (e) {
         setStatus({
           kind: 'error',
@@ -75,6 +101,7 @@ export default function AdminPage() {
       const payload = sanitizeContent(content)
       await setDoc(doc(db, CONTENT_PATH.collection, CONTENT_PATH.doc), {
         ...payload,
+        version: contentVersion,
         updatedAt: serverTimestamp(),
       })
       setContent(payload)
@@ -90,7 +117,7 @@ export default function AdminPage() {
 
   if (!isFirebaseConfigured) return <SetupNotice />
   if (!authReady) return <Centered>Loading…</Centered>
-  if (!user) return <SignIn />
+  if (!user) return <SignIn denied={denied} onRetry={() => setDenied(null)} />
 
   return (
     <div className="min-h-dvh bg-background text-foreground">
@@ -125,7 +152,7 @@ export default function AdminPage() {
                 setStatus({ kind: 'idle' })
               }
             }}
-            title="Reset the editor to the content committed in lib/data.ts"
+            title="Reset the editor to the Markdown committed in content/"
           >
             <RotateCcw className="size-3.5" aria-hidden /> Defaults
           </Button>
@@ -171,7 +198,7 @@ function Centered({ children }: { children: React.ReactNode }) {
   )
 }
 
-function SignIn() {
+function SignIn({ denied, onRetry }: { denied: string | null; onRetry: () => void }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
@@ -182,6 +209,7 @@ function SignIn() {
     if (!auth) return
     setBusy(true)
     setError('')
+    onRetry()
     try {
       const { signInWithEmailAndPassword } = await import('firebase/auth')
       await signInWithEmailAndPassword(auth, email.trim(), password)
@@ -209,6 +237,11 @@ function SignIn() {
         </div>
         <Field label="Email" type="email" value={email} onChange={setEmail} />
         <Field label="Password" type="password" value={password} onChange={setPassword} />
+        {denied ? (
+          <p className="text-xs text-destructive">
+            {denied} is not allowed here. This editor is private to the site owner.
+          </p>
+        ) : null}
         {error ? <p className="text-xs text-destructive">{error}</p> : null}
         <Button type="submit" disabled={busy} className="w-full justify-center">
           {busy ? 'Signing in…' : 'Sign in'}
@@ -231,7 +264,7 @@ function SetupNotice() {
       </p>
       <p className="mt-3 text-muted-foreground">
         Until then the site keeps rendering the content committed in{' '}
-        <code className="text-foreground">lib/data.ts</code>.
+        <code className="text-foreground">content/</code>.
       </p>
     </div>
   )

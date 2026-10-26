@@ -3,19 +3,12 @@
 import { MapPin } from 'lucide-react'
 import { useContent } from '@/lib/content'
 import { cn } from '@/lib/utils'
-import { MetricArrow, Reveal, Section, SectionHeader } from './primitives'
+import { MetricArrow, Reveal, Section } from './primitives'
 
 export function Experience() {
-  const { impactGroups, profile } = useContent()
+  const { impactGroups, profile, experienceRole } = useContent()
   return (
     <Section id="experience">
-      <SectionHeader
-        index="01"
-        total="08"
-        eyebrow="EXPERIENCE"
-        title="Building production software"
-        description="A single role, gone deep. Instead of a wall of resume bullets, here is the engineering work grouped by the problems it solved."
-      />
 
       <Reveal className="mb-10 overflow-hidden rounded-xl border border-border bg-card/60">
         <div className="flex flex-col gap-4 border-b border-border p-6 sm:flex-row sm:items-center sm:justify-between">
@@ -24,8 +17,7 @@ export function Experience() {
               {profile.company}
             </h3>
             <p className="mt-1 text-sm text-muted-foreground">
-              Software Engineer — Full Stack ·{' '}
-              <span className="text-foreground">Promoted from Intern, Jul 2023</span>
+              {experienceRole}
             </p>
           </div>
           <div className="flex flex-col items-start gap-1 sm:items-end">

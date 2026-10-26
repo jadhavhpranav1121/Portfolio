@@ -1,19 +1,12 @@
 'use client'
 
 import { useContent } from '@/lib/content'
-import { Reveal, Section, SectionHeader } from './primitives'
+import { Reveal, Section } from './primitives'
 
 export function Achievements() {
   const { achievements } = useContent()
   return (
     <Section id="achievements">
-      <SectionHeader
-        index="06"
-        total="08"
-        eyebrow="ACHIEVEMENTS"
-        title="Competitive & problem-solving credentials"
-        description="Proof of strong fundamentals — from a global CTF win to competitive programming and sustained algorithmic practice."
-      />
 
       <div className="grid gap-5 md:grid-cols-3">
         {achievements.map((a, i) => (
@@ -22,10 +15,10 @@ export function Achievements() {
             delay={i * 90}
             className="card-hover relative overflow-hidden rounded-xl border border-border bg-card p-7"
           >
-            <span className="mono-label absolute right-5 top-5 text-muted-foreground/70">
+            <span className="mono-label absolute right-5 top-5 text-muted-foreground">
               {a.tag}
             </span>
-            <p className="font-mono text-5xl font-semibold tracking-tight text-foreground text-glow">
+            <p className="font-mono text-5xl font-semibold tracking-tight text-foreground">
               {a.value}
             </p>
             <p className="mt-4 text-lg font-semibold tracking-tight">{a.title}</p>

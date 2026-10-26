@@ -3,7 +3,7 @@
 import { ChevronRight } from 'lucide-react'
 import { type CaseStudy } from '@/lib/data'
 import { useContent } from '@/lib/content'
-import { MetricArrow, Reveal, Section, SectionHeader, TechBadge } from './primitives'
+import { MetricArrow, Reveal, Section, TechBadge } from './primitives'
 
 function StepFlow({ steps }: { steps: string[] }) {
   return (
@@ -33,7 +33,6 @@ function Card({ study, delay }: { study: CaseStudy; delay: number }) {
         <span className="font-mono text-2xl font-semibold text-border transition-colors group-hover:text-primary/50">
           {study.id}
         </span>
-        <span className="mono-label text-muted-foreground">CASE.STUDY</span>
       </div>
 
       <h3 className="text-lg font-semibold tracking-tight">{study.title}</h3>
@@ -70,14 +69,7 @@ function Card({ study, delay }: { study: CaseStudy; delay: number }) {
 export function CaseStudies() {
   const { caseStudies } = useContent()
   return (
-    <Section id="engineering" className="relative">
-      <SectionHeader
-        index="02"
-        total="08"
-        eyebrow="ENGINEERING HIGHLIGHTS"
-        title="Problems I've solved"
-        description="Real production work distilled to problem, approach and result — the way engineering decisions actually get made."
-      />
+    <Section id="engineering">
       <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {caseStudies.map((study, i) => (
           <Card key={study.id} study={study} delay={(i % 3) * 80} />
