@@ -140,9 +140,10 @@ live site picks the change up on its next load — no rebuild, no `git push`.
 
 1. **Firebase console → Firestore Database → Create database** (production mode)
    in project `fir-91088`.
-2. **Authentication → Sign-in method → Email/Password → Enable**, then
-   **Users → Add user** with your email and a password. That account is the only
-   one allowed to write.
+2. **Authentication → Sign-in method → Google → Enable**. Then sign in to
+   `/admin` with **Sign in with Google** using `pranavhj23@gmail.com`; that is
+   the only account let in. (Email/Password also works, but only for an account
+   whose email is verified, which console-created users are not.)
 3. **Project settings → Your apps → Web app → SDK setup and configuration** —
    copy the config values.
 4. `cp .env.example .env.local` and fill in `NEXT_PUBLIC_FIREBASE_API_KEY`,
