@@ -107,12 +107,25 @@ there and publish.
 
 ## Deployment
 
+Every push to `master` deploys automatically
+(`.github/workflows/deploy.yml`): it builds from `content/`, then deploys
+hosting and `firestore.rules`. You can also run it by hand from the Actions tab.
+
+One-time setup, in GitHub → **Settings → Secrets and variables → Actions**:
+
+| Secret | Where to get it |
+| --- | --- |
+| `FIREBASE_SERVICE_ACCOUNT` | Firebase console → Project settings → Service accounts → **Generate new private key**; paste the whole JSON |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | Project settings → Your apps → Web app config |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | same |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | same |
+
+Manual deploy still works:
+
 ```bash
 pnpm build
 firebase deploy --only hosting
 ```
-
-`firebase.json` serves the exported `out/` directory.
 
 ## Admin — editing content without a deploy
 

@@ -1,0 +1,55 @@
+# Builds the site from content/*.md and deploys it to Firebase on every push
+# to master. Also deploys firestore.rules, which keeps /admin owner-only.
+#
+# Repository secrets (Settings → Secrets and variables → Actions):
+#   FIREBASE_SERVICE_ACCOUNT                  service account JSON key
+#   NEXT_PUBLIC_FIREBASE_API_KEY              } web app config, baked into
+#   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID  } the static export so /admin
+#   NEXT_PUBLIC_FIREBASE_APP_ID               } and live edits work
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm typecheck
+
+      - run: pnpm build
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: fir-91088.firebaseapp.com
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: fir-91088
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: fir-91088.firebasestorage.app
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+
+      - name: Deploy to Firebase
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+        run: |
+          key="$RUNNER_TEMP/firebase-key.json"
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > "$key"
+          export GOOGLE_APPLICATION_CREDENTIALS="$key"
+          npx --yes firebase-tools@14 deploy --only hosting,firestore:rules --project fir-91088 --non-interactive
