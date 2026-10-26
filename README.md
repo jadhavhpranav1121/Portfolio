@@ -107,12 +107,25 @@ there and publish.
 
 ## Deployment
 
+Every push to `master` deploys automatically
+(`.github/workflows/deploy.yml`): it builds from `content/`, then deploys
+hosting and `firestore.rules`. You can also run it by hand from the Actions tab.
+
+One-time setup, in GitHub → **Settings → Secrets and variables → Actions**:
+
+| Secret | Where to get it |
+| --- | --- |
+| `FIREBASE_SERVICE_ACCOUNT` | Firebase console → Project settings → Service accounts → **Generate new private key**; paste the whole JSON |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | Project settings → Your apps → Web app config |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | same |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | same |
+
+Manual deploy still works:
+
 ```bash
 pnpm build
 firebase deploy --only hosting
 ```
-
-`firebase.json` serves the exported `out/` directory.
 
 ## Admin — editing content without a deploy
 
@@ -127,9 +140,10 @@ live site picks the change up on its next load — no rebuild, no `git push`.
 
 1. **Firebase console → Firestore Database → Create database** (production mode)
    in project `fir-91088`.
-2. **Authentication → Sign-in method → Email/Password → Enable**, then
-   **Users → Add user** with your email and a password. That account is the only
-   one allowed to write.
+2. **Authentication → Sign-in method → Google → Enable**. Then sign in to
+   `/admin` with **Sign in with Google** using `pranavhj23@gmail.com`; that is
+   the only account let in. (Email/Password also works, but only for an account
+   whose email is verified, which console-created users are not.)
 3. **Project settings → Your apps → Web app → SDK setup and configuration** —
    copy the config values.
 4. `cp .env.example .env.local` and fill in `NEXT_PUBLIC_FIREBASE_API_KEY`,

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from 'react'
 import { ArrowUpRight, LogOut, RotateCcw, Save } from 'lucide-react'
-import type { User } from 'firebase/auth'
+import type { Auth, User } from 'firebase/auth'
 import { ContentEditor } from '@/components/admin/content-editor'
 import { Button, Field } from '@/components/admin/fields'
 import { isCurrent, mergeContent } from '@/lib/content'
@@ -204,21 +204,40 @@ function SignIn({ denied, onRetry }: { denied: string | null; onRetry: () => voi
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
-  const submit = async () => {
+  const run = async (signIn: (auth: Auth) => Promise<unknown>) => {
     const auth = getFirebaseAuth()
     if (!auth) return
     setBusy(true)
     setError('')
     onRetry()
     try {
-      const { signInWithEmailAndPassword } = await import('firebase/auth')
-      await signInWithEmailAndPassword(auth, email.trim(), password)
+      await signIn(auth)
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Sign-in failed')
+      const code = (e as { code?: string }).code
+      // Closing the Google popup is not an error worth showing.
+      if (code !== 'auth/popup-closed-by-user' && code !== 'auth/cancelled-popup-request') {
+        setError(e instanceof Error ? e.message : 'Sign-in failed')
+      }
     } finally {
       setBusy(false)
     }
   }
+
+  // Google accounts arrive with a verified email, which both the owner check
+  // and firestore.rules require.
+  const signInWithGoogle = () =>
+    run(async (auth) => {
+      const { GoogleAuthProvider, signInWithPopup } = await import('firebase/auth')
+      const provider = new GoogleAuthProvider()
+      provider.setCustomParameters({ login_hint: OWNER_EMAIL, prompt: 'select_account' })
+      await signInWithPopup(auth, provider)
+    })
+
+  const submit = () =>
+    run(async (auth) => {
+      const { signInWithEmailAndPassword } = await import('firebase/auth')
+      await signInWithEmailAndPassword(auth, email.trim(), password)
+    })
 
   return (
     <div className="flex min-h-dvh items-center justify-center bg-background p-6">
@@ -232,8 +251,21 @@ function SignIn({ denied, onRetry }: { denied: string | null; onRetry: () => voi
         <div>
           <h1 className="font-mono text-sm uppercase tracking-wider">Admin sign in</h1>
           <p className="mt-1 text-xs text-muted-foreground">
-            Firebase Auth account for this project.
+            Private to the site owner.
           </p>
+        </div>
+        <Button
+          variant="ghost"
+          disabled={busy}
+          onClick={() => void signInWithGoogle()}
+          className="w-full justify-center"
+        >
+          Sign in with Google
+        </Button>
+        <div className="flex items-center gap-3 text-[11px] uppercase tracking-wider text-muted-foreground">
+          <span className="h-px flex-1 bg-border" />
+          or with a password
+          <span className="h-px flex-1 bg-border" />
         </div>
         <Field label="Email" type="email" value={email} onChange={setEmail} />
         <Field label="Password" type="password" value={password} onChange={setPassword} />
@@ -244,7 +276,7 @@ function SignIn({ denied, onRetry }: { denied: string | null; onRetry: () => voi
         ) : null}
         {error ? <p className="text-xs text-destructive">{error}</p> : null}
         <Button type="submit" disabled={busy} className="w-full justify-center">
-          {busy ? 'Signing in…' : 'Sign in'}
+          {busy ? 'Signing in…' : 'Sign in with password'}
         </Button>
       </form>
     </div>
