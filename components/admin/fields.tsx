@@ -1,8 +1,9 @@
 'use client'
 
 import { ChevronDown, ChevronUp, Plus, Trash2 } from 'lucide-react'
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { cn } from '@/lib/utils'
+import { Markdown } from '@/components/portfolio/markdown'
 
 export function Field({
   label,
@@ -61,6 +62,82 @@ export function TextArea({
         onChange={(e) => onChange(e.target.value)}
         className="w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-1 focus:ring-ring"
       />
+    </label>
+  )
+}
+
+/** Markdown text with a Write / Preview toggle showing exactly what the site renders. */
+export function MarkdownField({
+  label,
+  value,
+  onChange,
+  rows = 5,
+}: {
+  label: string
+  value: string
+  onChange: (v: string) => void
+  rows?: number
+}) {
+  const [preview, setPreview] = useState(false)
+  return (
+    <div>
+      <div className="mb-1.5 flex items-center justify-between">
+        <span className="font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+          {label} <span className="normal-case tracking-normal">· Markdown</span>
+        </span>
+        <div className="flex gap-1 text-xs">
+          {(['Write', 'Preview'] as const).map((mode) => (
+            <button
+              key={mode}
+              type="button"
+              onClick={() => setPreview(mode === 'Preview')}
+              className={cn(
+                'rounded px-2 py-0.5',
+                preview === (mode === 'Preview')
+                  ? 'bg-muted text-foreground'
+                  : 'text-muted-foreground hover:text-foreground',
+              )}
+            >
+              {mode}
+            </button>
+          ))}
+        </div>
+      </div>
+      {preview ? (
+        <div className="min-h-24 rounded-md border border-input px-3 py-2 text-sm leading-relaxed text-muted-foreground">
+          {value.trim() ? <Markdown>{value}</Markdown> : <em>Nothing yet</em>}
+        </div>
+      ) : (
+        <textarea
+          value={value}
+          rows={rows}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="**bold**, *italic*, [link](https://…), blank line for a new paragraph"
+          className="w-full resize-y rounded-md border border-input bg-background px-3 py-2 font-mono text-sm outline-none focus:border-ring focus:ring-1 focus:ring-ring"
+        />
+      )}
+    </div>
+  )
+}
+
+export function Checkbox({
+  label,
+  checked,
+  onChange,
+}: {
+  label: string
+  checked: boolean
+  onChange: (v: boolean) => void
+}) {
+  return (
+    <label className="flex items-center gap-2 text-sm">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="size-4 accent-[var(--primary)]"
+      />
+      {label}
     </label>
   )
 }
@@ -185,8 +262,9 @@ export function ListEditor<T>({
 }: {
   items: T[]
   onChange: (items: T[]) => void
-  empty: () => T
-  addLabel: string
+  /** Omit to make the list fixed-length (reorder only, no add/delete). */
+  empty?: () => T
+  addLabel?: string
   itemLabel?: (item: T, index: number) => string
   render: (item: T, update: (patch: Partial<T>) => void) => ReactNode
 }) {
@@ -213,13 +291,15 @@ export function ListEditor<T>({
               <Button variant="ghost" onClick={() => move(i, i + 1)} title="Move down">
                 <ChevronDown className="size-3.5" aria-hidden />
               </Button>
-              <Button
-                variant="danger"
-                onClick={() => onChange(items.filter((_, j) => j !== i))}
-                title="Delete"
-              >
-                <Trash2 className="size-3.5" aria-hidden />
-              </Button>
+              {empty ? (
+                <Button
+                  variant="danger"
+                  onClick={() => onChange(items.filter((_, j) => j !== i))}
+                  title="Delete"
+                >
+                  <Trash2 className="size-3.5" aria-hidden />
+                </Button>
+              ) : null}
             </div>
           </div>
           <div className="space-y-3">
@@ -231,9 +311,11 @@ export function ListEditor<T>({
           </div>
         </div>
       ))}
-      <Button variant="ghost" onClick={() => onChange([...items, empty()])}>
-        <Plus className="size-3.5" aria-hidden /> {addLabel}
-      </Button>
+      {empty ? (
+        <Button variant="ghost" onClick={() => onChange([...items, empty()])}>
+          <Plus className="size-3.5" aria-hidden /> {addLabel}
+        </Button>
+      ) : null}
     </div>
   )
 }

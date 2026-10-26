@@ -3,41 +3,30 @@
 import { ArrowUpRight, Mail, MapPin } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from './brand-icons'
 import { useContent } from '@/lib/content'
-import { Reveal, Section, SectionHeader } from './primitives'
+import { Reveal, Section } from './primitives'
 
 export function Contact() {
-  const { profile } = useContent()
+  const { profile, contact } = useContent()
   return (
     <Section id="contact">
-      <SectionHeader
-        index="08"
-        total="08"
-        eyebrow="CONTACT"
-        title="Let's talk"
-        description="I'm interested in opportunities involving Java, Spring Boot, backend systems, distributed systems and full-stack engineering."
-      />
 
-      <Reveal className="overflow-hidden rounded-2xl border border-border bg-card/60 bg-grid">
+      <Reveal className="overflow-hidden rounded-2xl border border-border bg-card/60">
         <div className="flex flex-col items-center gap-8 px-6 py-14 text-center sm:px-10">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/10 px-3 py-1.5">
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-70" />
-              <span className="relative inline-flex size-2 rounded-full bg-primary" />
+          {contact.status ? (
+            <span className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <span className="size-1.5 rounded-full bg-[oklch(0.72_0.17_150)]" aria-hidden />
+              {contact.status}
             </span>
-            <span className="mono-label text-primary">
-              SYSTEM.STATUS · OPEN TO SE OPPORTUNITIES
-            </span>
-          </div>
+          ) : null}
 
           <h3 className="max-w-2xl text-balance text-2xl font-semibold tracking-tight sm:text-3xl">
-            Building something that needs to be reliable under load? Let&apos;s
-            connect.
+            {contact.headline}
           </h3>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <a
               href={`mailto:${profile.email}`}
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground shadow-[0_0_28px_-6px_var(--glow)] transition-all hover:brightness-110"
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-sm font-medium text-primary-foreground transition-all hover:brightness-110"
             >
               <Mail className="size-4" aria-hidden />
               Email Me

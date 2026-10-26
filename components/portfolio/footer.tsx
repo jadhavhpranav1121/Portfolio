@@ -5,7 +5,7 @@ import { useContent } from '@/lib/content'
 import { GithubIcon, LinkedinIcon } from './brand-icons'
 
 export function Footer() {
-  const { profile } = useContent()
+  const { profile, footer } = useContent()
   const year = new Date().getFullYear()
   return (
     <footer className="border-t border-border">
@@ -23,7 +23,7 @@ export function Footer() {
             Designed &amp; built by {profile.name}.
           </p>
           <p className="mt-1 font-mono text-xs text-muted-foreground">
-            Java · Spring · Systems · Web
+            {footer.tagline}
           </p>
         </div>
 

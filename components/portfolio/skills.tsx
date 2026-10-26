@@ -1,19 +1,12 @@
 'use client'
 
 import { useContent } from '@/lib/content'
-import { Reveal, Section, SectionHeader } from './primitives'
+import { Reveal, Section } from './primitives'
 
 export function Skills() {
   const { skillGroups } = useContent()
   return (
     <Section id="skills">
-      <SectionHeader
-        index="04"
-        total="08"
-        eyebrow="TECH STACK"
-        title="Tools I reach for"
-        description="Grouped by intent, not by a meaningless percentage bar. These are the technologies I use to ship and operate production systems."
-      />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {skillGroups.map((group, i) => (

@@ -1,16 +1,26 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
-import { defaultContent, type SiteContent } from '@/lib/data'
+import { contentVersion, defaultContent, type SiteContent } from '@/lib/data'
 import { CONTENT_PATH, getDb } from '@/lib/firebase'
+
+/**
+ * True when a Firestore document was published on top of the Markdown this
+ * build was made from. Once the Markdown changes and the site is rebuilt, older
+ * live edits are stale and the Markdown wins.
+ */
+export function isCurrent(stored: unknown): boolean {
+  return (stored as { version?: unknown } | null)?.version === contentVersion
+}
 
 /**
  * Merges a stored document over the built-in defaults, one top-level key at a
  * time. Anything missing or of the wrong shape falls back to the default, so a
  * partial or half-written Firestore document can never blank out a section.
+ * Stale documents (see `isCurrent`) are ignored entirely.
  */
 export function mergeContent(stored: unknown): SiteContent {
-  if (!stored || typeof stored !== 'object') return defaultContent
+  if (!stored || typeof stored !== 'object' || !isCurrent(stored)) return defaultContent
   const raw = stored as Record<string, unknown>
   const merged = { ...defaultContent } as Record<string, unknown>
 
@@ -72,4 +82,9 @@ export function ContentProvider({ children }: { children: ReactNode }) {
 /** Live site content. Always defined — defaults until Firestore responds. */
 export function useContent(): SiteContent {
   return useContext(ContentContext)
+}
+
+/** Visible sections, in page order. */
+export function useVisibleSections() {
+  return useContent().sections.filter((s) => !s.hidden)
 }

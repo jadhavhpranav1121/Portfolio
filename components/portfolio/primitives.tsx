@@ -3,6 +3,9 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 import { useReveal } from '@/hooks/use-reveal'
+import { useVisibleSections } from '@/lib/content'
+import type { SectionId } from '@/lib/data'
+import { Markdown } from './markdown'
 
 export function Reveal({
   children,
@@ -27,56 +30,50 @@ export function Reveal({
   )
 }
 
+/**
+ * A page section driven by content: heading, intro and visibility come from
+ * the matching `sections` entry (content/sections/NN-<id>.md). Hidden sections
+ * render nothing.
+ */
 export function Section({
   id,
   children,
   className,
+  intro = true,
 }: {
-  id: string
+  id: SectionId
   children: ReactNode
   className?: string
+  /** Set false when the section renders its intro Markdown itself. */
+  intro?: boolean
 }) {
-  return (
-    <section
-      id={id}
-      className={cn('scroll-mt-24 py-20 sm:py-28', className)}
-    >
-      <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">{children}</div>
-    </section>
-  )
-}
+  const sections = useVisibleSections()
+  const index = sections.findIndex((s) => s.id === id)
+  if (index === -1) return null
+  const section = sections[index]
 
-export function SectionHeader({
-  index,
-  total,
-  eyebrow,
-  title,
-  description,
-}: {
-  index: string
-  total: string
-  eyebrow: string
-  title: string
-  description?: string
-}) {
   return (
-    <Reveal className="mb-12 sm:mb-16">
-      <div className="flex items-center gap-3">
-        <span className="mono-label text-primary">{eyebrow}</span>
-        <span className="h-px flex-1 bg-border" />
-        <span className="mono-label text-muted-foreground">
-          {index} / {total}
-        </span>
+    <section id={id} className={cn('scroll-mt-24 py-20 sm:py-28', className)}>
+      <div className="mx-auto w-full max-w-6xl px-5 sm:px-8">
+        <Reveal className="mb-12 sm:mb-14">
+          <div className="flex items-baseline gap-3">
+            <span className="font-mono text-xs text-muted-foreground tabular-nums">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            <span className="mono-label text-primary">{section.eyebrow}</span>
+          </div>
+          <h2 className="mt-4 text-pretty text-3xl font-semibold tracking-tight sm:text-4xl">
+            {section.title}
+          </h2>
+          {intro ? (
+            <Markdown className="mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
+              {section.intro}
+            </Markdown>
+          ) : null}
+        </Reveal>
+        {children}
       </div>
-      <h2 className="mt-5 text-pretty text-3xl font-semibold tracking-tight sm:text-4xl md:text-[2.75rem]">
-        {title}
-      </h2>
-      {description ? (
-        <p className="mt-4 max-w-2xl text-pretty leading-relaxed text-muted-foreground">
-          {description}
-        </p>
-      ) : null}
-    </Reveal>
+    </section>
   )
 }
 

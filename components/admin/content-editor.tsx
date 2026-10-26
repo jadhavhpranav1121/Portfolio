@@ -2,31 +2,52 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
-import type { SiteContent } from '@/lib/data'
-import { Button, Field, ListEditor, Panel, StringList, TextArea } from './fields'
+import { applyMarkdownFile, contentToMarkdown } from '@/lib/content-md'
+import type { IconName, SiteContent } from '@/lib/data'
+import { ICONS } from '@/components/portfolio/icons'
+import {
+  Button,
+  Checkbox,
+  Field,
+  ListEditor,
+  MarkdownField,
+  Panel,
+  StringList,
+  TextArea,
+} from './fields'
+
+const ICON_NAMES = Object.keys(ICONS).join(', ')
 
 type SectionKey =
   | 'profile'
+  | 'sections'
   | 'hero'
   | 'stats'
   | 'experience'
+  | 'architecture'
   | 'caseStudies'
   | 'skills'
   | 'projects'
   | 'achievements'
-  | 'timeline'
+  | 'about'
+  | 'contact'
+  | 'markdown'
   | 'json'
 
 const SECTIONS: { key: SectionKey; label: string }[] = [
   { key: 'profile', label: 'Profile & Resume' },
-  { key: 'hero', label: 'Hero & Nav' },
+  { key: 'sections', label: 'Sections & order' },
+  { key: 'hero', label: 'Hero' },
   { key: 'stats', label: 'Stats' },
   { key: 'experience', label: 'Experience' },
   { key: 'caseStudies', label: 'Case Studies' },
+  { key: 'architecture', label: 'Architecture' },
   { key: 'skills', label: 'Skills' },
   { key: 'projects', label: 'Projects' },
   { key: 'achievements', label: 'Achievements' },
-  { key: 'timeline', label: 'Timeline' },
+  { key: 'about', label: 'About & Timeline' },
+  { key: 'contact', label: 'Contact & Footer' },
+  { key: 'markdown', label: 'Markdown files' },
   { key: 'json', label: 'Raw JSON' },
 ]
 
@@ -40,6 +61,10 @@ export function ContentEditor({
   const [section, setSection] = useState<SectionKey>('profile')
   const set = <K extends keyof SiteContent>(key: K, value: SiteContent[K]) =>
     onChange({ ...content, [key]: value })
+  const setHero = (patch: Partial<SiteContent['hero']>) =>
+    set('hero', { ...content.hero, ...patch })
+  const setFeatured = (patch: Partial<SiteContent['featured']>) =>
+    set('featured', { ...content.featured, ...patch })
 
   return (
     <div className="grid gap-6 lg:grid-cols-[200px_1fr]">
@@ -123,32 +148,201 @@ export function ContentEditor({
           </Panel>
         )}
 
+        {section === 'sections' && (
+          <Panel
+            title="Sections"
+            description="Heading, nav label and intro for every section. Order here is the order on the page; hide a section to take it off the page and out of the nav."
+          >
+            <ListEditor
+              items={content.sections}
+              onChange={(v) => set('sections', v)}
+              itemLabel={(s) => `${s.id}${s.hidden ? ' · hidden' : ''}`}
+              render={(item, update) => (
+                <>
+                  <div className="grid gap-3 sm:grid-cols-3">
+                    <Field label="Nav label" value={item.nav} onChange={(v) => update({ nav: v })} />
+                    <Field
+                      label="Eyebrow"
+                      value={item.eyebrow}
+                      onChange={(v) => update({ eyebrow: v })}
+                    />
+                    <Field label="Title" value={item.title} onChange={(v) => update({ title: v })} />
+                  </div>
+                  <MarkdownField
+                    label={item.id === 'about' ? 'Body' : 'Intro'}
+                    value={item.intro}
+                    onChange={(v) => update({ intro: v })}
+                    rows={item.id === 'about' ? 8 : 3}
+                  />
+                  <Checkbox
+                    label="Hidden"
+                    checked={!!item.hidden}
+                    onChange={(hidden) => update({ hidden })}
+                  />
+                </>
+              )}
+            />
+          </Panel>
+        )}
+
         {section === 'hero' && (
           <>
-            <Panel title="Hero tech stack" description="The chips under the hero headline.">
+            <Panel title="Hero" description="The first screen of the site.">
+              <Field label="Badge" value={content.hero.badge} onChange={(v) => setHero({ badge: v })} />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <Field
+                  label="Headline"
+                  value={content.hero.headline}
+                  onChange={(v) => setHero({ headline: v })}
+                />
+                <Field
+                  label="Highlight (accent colour)"
+                  value={content.hero.highlight}
+                  onChange={(v) => setHero({ highlight: v })}
+                />
+              </div>
+              <MarkdownField
+                label="Intro"
+                value={content.hero.intro}
+                onChange={(v) => setHero({ intro: v })}
+              />
+              <div className="grid gap-3 sm:grid-cols-3">
+                <Field
+                  label="Main button label"
+                  value={content.hero.primaryCta.label}
+                  onChange={(v) => setHero({ primaryCta: { ...content.hero.primaryCta, label: v } })}
+                />
+                <Field
+                  label="Main button link"
+                  value={content.hero.primaryCta.href}
+                  onChange={(v) => setHero({ primaryCta: { ...content.hero.primaryCta, href: v } })}
+                />
+                <Field
+                  label="Resume button label"
+                  value={content.hero.resumeLabel}
+                  onChange={(v) => setHero({ resumeLabel: v })}
+                />
+              </div>
               <StringList
-                label="Tech"
-                items={content.heroTech}
-                onChange={(v) => set('heroTech', v)}
+                label="Tech chips"
+                items={content.hero.tech}
+                onChange={(tech) => setHero({ tech })}
                 placeholder="Spring Boot"
               />
             </Panel>
-            <Panel title="Navigation" description="Links in the navbar. href must start with #.">
+            <Panel
+              title="Hero flow diagram"
+              description={`The card beside the headline. Icons: ${ICON_NAMES}.`}
+            >
+              <Field
+                label="Title"
+                value={content.hero.flowTitle}
+                onChange={(v) => setHero({ flowTitle: v })}
+              />
               <ListEditor
-                items={content.navLinks}
-                onChange={(v) => set('navLinks', v)}
-                empty={() => ({ label: '', href: '#' })}
-                addLabel="Add link"
-                itemLabel={(l) => l.label || 'New link'}
-                render={(link, update) => (
-                  <div className="grid gap-3 sm:grid-cols-2">
-                    <Field label="Label" value={link.label} onChange={(v) => update({ label: v })} />
-                    <Field label="Href" value={link.href} onChange={(v) => update({ href: v })} />
+                items={content.hero.flow}
+                onChange={(flow) => setHero({ flow })}
+                empty={() => ({ label: '', sub: '', icon: 'server' as IconName, tag: '' })}
+                addLabel="Add step"
+                itemLabel={(n) => n.label || 'New step'}
+                render={(node, update) => (
+                  <div className="grid gap-3 sm:grid-cols-4">
+                    <Field label="Label" value={node.label} onChange={(v) => update({ label: v })} />
+                    <Field label="Sub" value={node.sub} onChange={(v) => update({ sub: v })} />
+                    <IconSelect value={node.icon} onChange={(icon) => update({ icon })} />
+                    <Field label="Tag" value={node.tag} onChange={(v) => update({ tag: v })} />
                   </div>
                 )}
               />
             </Panel>
-            <Panel title="Terminal" description="The animated terminal in the About section.">
+          </>
+        )}
+
+        {section === 'architecture' && (
+          <Panel
+            title="Architecture diagram"
+            description="Layers top to bottom. A layer with a group name renders as a labelled cluster; otherwise its nodes sit side by side."
+          >
+            <ListEditor
+              items={content.architecture}
+              onChange={(v) => set('architecture', v)}
+              empty={() => ({ connector: '', nodes: [{ title: '' }] })}
+              addLabel="Add layer"
+              itemLabel={(l) => l.group || l.nodes.map((n) => n.title).join(' · ') || 'New layer'}
+              render={(layer, update) => (
+                <>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    <Field
+                      label="Connector label (line above)"
+                      value={layer.connector ?? ''}
+                      onChange={(v) => update({ connector: v })}
+                    />
+                    <Field
+                      label="Group name (optional)"
+                      value={layer.group ?? ''}
+                      onChange={(v) => update({ group: v })}
+                    />
+                  </div>
+                  <ListEditor
+                    items={layer.nodes}
+                    onChange={(nodes) => update({ nodes })}
+                    empty={() => ({ title: '', sub: '', icon: 'server' as IconName })}
+                    addLabel="Add node"
+                    itemLabel={(n) => n.title || 'New node'}
+                    render={(node, updateNode) => (
+                      <div className="grid gap-3 sm:grid-cols-3">
+                        <Field
+                          label="Title"
+                          value={node.title}
+                          onChange={(v) => updateNode({ title: v })}
+                        />
+                        <Field
+                          label="Sub"
+                          value={node.sub ?? ''}
+                          onChange={(v) => updateNode({ sub: v })}
+                        />
+                        <IconSelect
+                          value={node.icon}
+                          onChange={(icon) => updateNode({ icon })}
+                        />
+                      </div>
+                    )}
+                  />
+                </>
+              )}
+            />
+          </Panel>
+        )}
+
+        {section === 'about' && (
+          <>
+            <Panel
+              title="About"
+              description="The About text itself is the About section's body under Sections & order."
+            >
+              <Button variant="ghost" onClick={() => setSection('sections')}>
+                Edit About text
+              </Button>
+            </Panel>
+            <Panel title="Timeline" description="The career timeline in the About section.">
+              <ListEditor
+                items={content.timeline}
+                onChange={(v) => set('timeline', v)}
+                empty={() => ({ year: '', title: '', detail: '' })}
+                addLabel="Add entry"
+                itemLabel={(t) => t.title || 'New entry'}
+                render={(item, update) => (
+                  <>
+                    <div className="grid gap-3 sm:grid-cols-[120px_1fr]">
+                      <Field label="Year" value={item.year} onChange={(v) => update({ year: v })} />
+                      <Field label="Title" value={item.title} onChange={(v) => update({ title: v })} />
+                    </div>
+                    <Field label="Detail" value={item.detail} onChange={(v) => update({ detail: v })} />
+                  </>
+                )}
+              />
+            </Panel>
+            <Panel title="Terminal" description="The terminal card beside the About text.">
               <ListEditor
                 items={content.terminalLines}
                 onChange={(v) => set('terminalLines', v)}
@@ -165,6 +359,33 @@ export function ContentEditor({
             </Panel>
           </>
         )}
+
+        {section === 'contact' && (
+          <>
+            <Panel title="Contact" description="The closing call to action.">
+              <Field
+                label="Status line"
+                value={content.contact.status}
+                onChange={(v) => set('contact', { ...content.contact, status: v })}
+                hint="Leave empty to hide it."
+              />
+              <TextArea
+                label="Headline"
+                value={content.contact.headline}
+                onChange={(v) => set('contact', { ...content.contact, headline: v })}
+              />
+            </Panel>
+            <Panel title="Footer">
+              <Field
+                label="Tagline"
+                value={content.footer.tagline}
+                onChange={(v) => set('footer', { tagline: v })}
+              />
+            </Panel>
+          </>
+        )}
+
+        {section === 'markdown' && <MarkdownPanel content={content} onChange={onChange} />}
 
         {section === 'stats' && (
           <Panel title="Stats strip" description="The counters below the hero.">
@@ -187,6 +408,14 @@ export function ContentEditor({
         )}
 
         {section === 'experience' && (
+          <>
+          <Panel title="Role" description="The line under the company name.">
+            <Field
+              label="Role line"
+              value={content.experienceRole}
+              onChange={(v) => set('experienceRole', v)}
+            />
+          </Panel>
           <Panel
             title="Engineering impact"
             description="Grouped highlights in the Experience section. Each group holds one or more items."
@@ -247,6 +476,7 @@ export function ContentEditor({
               )}
             />
           </Panel>
+          </>
         )}
 
         {section === 'caseStudies' && (
@@ -332,6 +562,44 @@ export function ContentEditor({
         )}
 
         {section === 'projects' && (
+          <>
+          <Panel title="Featured work" description="The highlighted card above the project grid.">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field
+                label="Label"
+                value={content.featured.label}
+                onChange={(v) => setFeatured({ label: v })}
+              />
+              <Field
+                label="Title"
+                value={content.featured.title}
+                onChange={(v) => setFeatured({ title: v })}
+              />
+            </div>
+            <MarkdownField
+              label="Body"
+              value={content.featured.body}
+              onChange={(v) => setFeatured({ body: v })}
+            />
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field
+                label="Link label"
+                value={content.featured.cta.label}
+                onChange={(v) => setFeatured({ cta: { ...content.featured.cta, label: v } })}
+                hint="Leave empty to hide the link."
+              />
+              <Field
+                label="Link"
+                value={content.featured.cta.href}
+                onChange={(v) => setFeatured({ cta: { ...content.featured.cta, href: v } })}
+              />
+            </div>
+            <StringList
+              label="Tech"
+              items={content.featured.tech}
+              onChange={(tech) => setFeatured({ tech })}
+            />
+          </Panel>
           <Panel title="Projects" description="Featured projects render first.">
             <ListEditor
               items={content.projects}
@@ -387,6 +655,7 @@ export function ContentEditor({
               )}
             />
           </Panel>
+          </>
         )}
 
         {section === 'achievements' && (
@@ -414,27 +683,6 @@ export function ContentEditor({
                     value={item.detail}
                     onChange={(v) => update({ detail: v })}
                   />
-                </>
-              )}
-            />
-          </Panel>
-        )}
-
-        {section === 'timeline' && (
-          <Panel title="Timeline" description="The career timeline in the About section.">
-            <ListEditor
-              items={content.timeline}
-              onChange={(v) => set('timeline', v)}
-              empty={() => ({ year: '', title: '', detail: '' })}
-              addLabel="Add entry"
-              itemLabel={(t) => t.title || 'New entry'}
-              render={(item, update) => (
-                <>
-                  <div className="grid gap-3 sm:grid-cols-[120px_1fr]">
-                    <Field label="Year" value={item.year} onChange={(v) => update({ year: v })} />
-                    <Field label="Title" value={item.title} onChange={(v) => update({ title: v })} />
-                  </div>
-                  <Field label="Detail" value={item.detail} onChange={(v) => update({ detail: v })} />
                 </>
               )}
             />
@@ -485,6 +733,131 @@ function JsonPanel({
           Reload from editor
         </Button>
       </div>
+    </Panel>
+  )
+}
+
+function IconSelect({ value, onChange }: { value?: IconName; onChange: (v: IconName) => void }) {
+  return (
+    <label className="block">
+      <span className="mb-1.5 block font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+        Icon
+      </span>
+      <select
+        value={value ?? 'server'}
+        onChange={(e) => onChange(e.target.value as IconName)}
+        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm outline-none focus:border-ring focus:ring-1 focus:ring-ring"
+      >
+        {Object.keys(ICONS).map((name) => (
+          <option key={name}>{name}</option>
+        ))}
+      </select>
+    </label>
+  )
+}
+
+/**
+ * The bridge between /admin and the repo: download the current editor content
+ * as the Markdown files in content/, or load edited .md files back in.
+ */
+function MarkdownPanel({
+  content,
+  onChange,
+}: {
+  content: SiteContent
+  onChange: (next: SiteContent) => void
+}) {
+  const files = contentToMarkdown(content)
+  const [open, setOpen] = useState(files[0]?.name ?? '')
+  const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null)
+  const current = files.find((f) => f.name === open) ?? files[0]
+
+  const download = (name: string, text: string) => {
+    const url = URL.createObjectURL(new Blob([text], { type: 'text/markdown' }))
+    const a = document.createElement('a')
+    a.href = url
+    a.download = name.split('/').pop()!
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const importFiles = async (list: FileList | null) => {
+    if (!list?.length) return
+    try {
+      let next = content
+      for (const file of Array.from(list)) {
+        next = applyMarkdownFile(next, { name: file.name, text: await file.text() })
+      }
+      onChange(next)
+      setMessage({ ok: true, text: `Loaded ${list.length} file(s). Review, then Publish.` })
+    } catch (e) {
+      setMessage({ ok: false, text: e instanceof Error ? e.message : 'Could not read file' })
+    }
+  }
+
+  return (
+    <Panel
+      title="Markdown files"
+      description="These are the files in content/ of the repo. Download one to commit your admin edits permanently, or upload edited .md files to stage them here."
+    >
+      <div className="flex flex-wrap gap-1">
+        {files.map((f) => (
+          <button
+            key={f.name}
+            type="button"
+            onClick={() => setOpen(f.name)}
+            className={cn(
+              'rounded-md px-2 py-1 font-mono text-xs',
+              f.name === current?.name
+                ? 'bg-muted text-foreground'
+                : 'text-muted-foreground hover:text-foreground',
+            )}
+          >
+            {f.name}
+          </button>
+        ))}
+      </div>
+      {current ? (
+        <>
+          <pre className="max-h-[28rem] overflow-auto rounded-md border border-input bg-background p-3 font-mono text-xs leading-relaxed">
+            {current.text}
+          </pre>
+          <div className="flex flex-wrap gap-2">
+            <Button variant="ghost" onClick={() => void navigator.clipboard.writeText(current.text)}>
+              Copy
+            </Button>
+            <Button variant="ghost" onClick={() => download(current.name, current.text)}>
+              Download {current.name.split('/').pop()}
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => files.forEach((f) => download(f.name, f.text))}
+            >
+              Download all
+            </Button>
+          </div>
+        </>
+      ) : null}
+      <label className="block">
+        <span className="mb-1.5 block font-mono text-[11px] uppercase tracking-wider text-muted-foreground">
+          Upload .md files
+        </span>
+        <input
+          type="file"
+          accept=".md,text/markdown"
+          multiple
+          onChange={(e) => {
+            void importFiles(e.target.files)
+            e.target.value = ''
+          }}
+          className="text-sm"
+        />
+      </label>
+      {message ? (
+        <p className={cn('text-xs', message.ok ? 'text-muted-foreground' : 'text-destructive')}>
+          {message.text}
+        </p>
+      ) : null}
     </Panel>
   )
 }
